@@ -32,10 +32,31 @@ export const serverEnvSchema = publicEnvSchema.extend({
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>
 
+function normalizeServerInput(
+  input: Record<string, string | undefined>,
+): Record<string, string | undefined> {
+  const normalized = Object.fromEntries(
+    Object.entries(input).map(([key, value]) => [
+      key,
+      typeof value === 'string' && value.trim() === '' ? undefined : value,
+    ]),
+  )
+  const vercelHostname =
+    normalized.VERCEL_URL ?? normalized.VERCEL_PROJECT_PRODUCTION_URL
+
+  if (!vercelHostname) return normalized
+
+  return {
+    ...normalized,
+    APP_URL: normalized.APP_URL ?? `https://${vercelHostname}`,
+    PLATFORM_ROOT_DOMAIN: normalized.PLATFORM_ROOT_DOMAIN ?? vercelHostname,
+  }
+}
+
 export function parseServerEnv(
   input: Record<string, string | undefined>,
 ): ServerEnv {
-  const result = serverEnvSchema.safeParse(input)
+  const result = serverEnvSchema.safeParse(normalizeServerInput(input))
 
   if (!result.success) {
     const fields = result.error.issues

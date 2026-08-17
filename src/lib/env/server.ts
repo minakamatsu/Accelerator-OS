@@ -3,6 +3,8 @@ import { parseServerEnv } from '@/lib/env/schema'
 
 export const serverEnv = parseServerEnv({
   NODE_ENV: process.env.NODE_ENV,
+  VERCEL_URL: process.env.VERCEL_URL,
+  VERCEL_PROJECT_PRODUCTION_URL: process.env.VERCEL_PROJECT_PRODUCTION_URL,
   APP_URL: process.env.APP_URL,
   PLATFORM_ROOT_DOMAIN: process.env.PLATFORM_ROOT_DOMAIN,
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,

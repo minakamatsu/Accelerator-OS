@@ -24,6 +24,23 @@ Open `http://localhost:3000`. On Windows systems where PowerShell blocks `npm.ps
 
 To exercise authentication, copy the local Supabase values reported by `npm run db:start` into `.env.local` using `.env.example`. Never commit `.env.local` or expose `SUPABASE_SECRET_KEY` publicly.
 
+### Vercel preview configuration
+
+For a functional hosted preview, configure these three values in Vercel instead
+of copying blank `.env.example` entries:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_SECRET_KEY`
+
+Enable **Automatically expose System Environment Variables** in the Vercel
+project. Accelerator OS then derives `APP_URL` and `PLATFORM_ROOT_DOMAIN` from
+the deployment. Set them explicitly only when attaching a stable custom domain.
+
+Resend, Square, Turnstile, and GA variables are optional until those providers
+are deliberately enabled. Omit unused variables or leave them blank; never
+commit their credentials.
+
 Seed users use the development-only password `LocalOnly!ChangeMe2026`:
 
 - `admin@accelerator.test` — agency administrator.
