@@ -1,0 +1,23 @@
+# dependencies
+/node_modules/
+/.npm-cache/
+/supabase/.branches/
+/supabase/.temp/
+
+# Next.js output
+/.next/
+/out/
+
+# test and tooling output
+/coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# local environment files (the example is intentionally tracked)
+.env*
+!.env.example
+
+# editor and operating-system files
+.DS_Store
+Thumbs.db
+*.log

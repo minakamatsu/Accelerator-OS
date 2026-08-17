@@ -1,0 +1,218 @@
+.shell {
+  display: grid;
+  gap: 2.75rem;
+  max-width: 100rem;
+  margin-inline: auto;
+  padding: 3.5rem 1rem 1rem;
+  color: #f6f4ed;
+  background:
+    radial-gradient(
+      circle at 85% 5%,
+      color-mix(in srgb, var(--site-accent) 18%, transparent),
+      transparent 23rem
+    ),
+    var(--site-primary);
+  border-radius: 1.6rem;
+  overflow: hidden;
+}
+
+.intro {
+  max-width: 43rem;
+  padding-inline: 0.25rem;
+}
+
+.kicker,
+.resultLabel {
+  margin: 0;
+  color: var(--site-accent);
+  font-size: 0.66rem;
+  font-weight: 900;
+  line-height: 1.45;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.intro h2 {
+  max-width: 13ch;
+  margin: 0.7rem 0 1rem;
+  font-size: clamp(2.65rem, 12vw, 4rem);
+  line-height: 0.94;
+  letter-spacing: -0.062em;
+}
+
+.intro > p:last-child {
+  max-width: 40rem;
+  margin: 0;
+  color: rgb(246 244 237 / 70%);
+  font-size: 0.95rem;
+  line-height: 1.68;
+}
+
+.workspace {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.options button {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  min-height: 4rem;
+  padding: 0.8rem 0.9rem;
+  color: rgb(246 244 237 / 68%);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: left;
+  background: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: 180ms ease;
+  transition-property: color, background, border-color, transform;
+}
+
+.options button:hover,
+.options .activeOption {
+  color: #f6f4ed;
+  background: rgb(255 255 255 / 10%);
+  border-color: color-mix(in srgb, var(--site-accent) 65%, transparent);
+}
+
+.options button span {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--site-primary);
+  font-size: 0.66rem;
+  font-weight: 950;
+  background: var(--site-accent);
+  border-radius: 50%;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 20rem;
+  padding: 1.5rem;
+  color: #132621;
+  background: #f6f4ed;
+  border-radius: 1.25rem;
+}
+
+.resultLabel {
+  color: color-mix(in srgb, var(--site-primary) 78%, black);
+}
+
+.result h3 {
+  margin: 0.8rem 0;
+  font-size: clamp(2rem, 9vw, 2.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.result p {
+  max-width: 36rem;
+  margin: 0;
+  color: #52645f;
+  font-size: 0.92rem;
+  line-height: 1.68;
+}
+
+.callButton {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  color: #f6f4ed;
+  text-decoration: none;
+  background: var(--site-primary);
+  border-radius: 1.15rem;
+}
+
+.callButton span {
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.callButton strong {
+  color: var(--site-accent);
+  font-size: 0.82rem;
+}
+
+@media (min-width: 40rem) {
+  .shell {
+    gap: 3.5rem;
+    padding: 4.5rem 2.5rem 2.5rem;
+    border-radius: 2.5rem;
+  }
+
+  .intro h2 {
+    font-size: clamp(4rem, 8vw, 5.4rem);
+  }
+
+  .intro > p:last-child {
+    font-size: 1.05rem;
+  }
+
+  .result {
+    min-height: 22rem;
+    padding: 2.5rem;
+  }
+
+  .callButton {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 999px;
+  }
+}
+
+@media (min-width: 52rem) {
+  .workspace {
+    grid-template-columns: minmax(0, 0.9fr) minmax(19rem, 1.1fr);
+    gap: 1rem;
+  }
+
+  .options button:hover,
+  .options .activeOption {
+    transform: translateX(0.3rem);
+  }
+}
+
+@media (min-width: 68.75rem) {
+  .shell {
+    gap: 5rem;
+    padding: 5.5rem;
+    border-radius: 3.5rem;
+  }
+
+  .intro h2 {
+    font-size: 5.8rem;
+  }
+
+  .options button {
+    min-height: 4.5rem;
+    padding: 0.9rem 1.1rem;
+  }
+
+  .result {
+    padding: 3.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .options button {
+    transition: none;
+  }
+}

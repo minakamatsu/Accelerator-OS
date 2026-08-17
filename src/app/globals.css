@@ -1,0 +1,184 @@
+@import 'tailwindcss';
+
+:root {
+  --ink: #10231f;
+  --ink-muted: #52645f;
+  --paper: #f5f3ec;
+  --paper-strong: #fffdf8;
+  --line: #d8ddd5;
+  --brand: #154f43;
+  --brand-bright: #1e725f;
+  --signal: #d8f23f;
+  --signal-ink: #10231f;
+  --warning: #8a4a0c;
+  --header: rgb(245 243 236 / 0.94);
+  --surface-hover: #edf0e9;
+  --control: #ffffff;
+  --control-hover: #edf0e9;
+  --action: #10231f;
+  --action-hover: #154f43;
+  --action-text: #ffffff;
+  --nav-active: #10231f;
+  --nav-active-text: #ffffff;
+  --success-soft: #e8f4e8;
+  --success-ink: #245a35;
+  --danger-soft: #fbe9e6;
+  --danger-ink: #8b2f24;
+  --danger-line: #e5b8b1;
+  --radius-sm: 0.75rem;
+  --radius-md: 1.25rem;
+  --shadow-soft: 0 24px 70px rgb(16 35 31 / 0.09);
+  --shadow-control: 0 8px 24px rgb(16 35 31 / 0.08);
+}
+
+[data-platform-theme='agency'] {
+  --ink: #f2f7f4;
+  --ink-muted: #9fb2ab;
+  --paper: #07100e;
+  --paper-strong: #101c19;
+  --line: #2a3b36;
+  --brand: #68d1b2;
+  --brand-bright: #8be1c7;
+  --warning: #f2bb62;
+  --header: rgb(7 16 14 / 0.9);
+  --surface-hover: #1a2b26;
+  --control: #0b1613;
+  --control-hover: #172721;
+  --action: #d8f23f;
+  --action-hover: #e4f86b;
+  --action-text: #10231f;
+  --nav-active: #d8f23f;
+  --nav-active-text: #10231f;
+  --success-soft: #15362d;
+  --success-ink: #8ee5bd;
+  --danger-soft: #3b201f;
+  --danger-ink: #ffaaa3;
+  --danger-line: #70413d;
+  --shadow-soft: 0 28px 80px rgb(0 0 0 / 0.32);
+  --shadow-control: 0 10px 30px rgb(0 0 0 / 0.24);
+  min-height: 100vh;
+  color: var(--ink);
+  color-scheme: dark;
+  background:
+    radial-gradient(circle at 90% 0%, rgb(84 112 255 / 0.1), transparent 30rem),
+    radial-gradient(
+      circle at 8% 12%,
+      rgb(104 209 178 / 0.08),
+      transparent 26rem
+    ),
+    var(--paper);
+}
+
+[data-platform-theme='agency'] input,
+[data-platform-theme='agency'] textarea,
+[data-platform-theme='agency'] select {
+  caret-color: var(--signal);
+}
+
+[data-platform-theme='agency']
+  input:not(
+    :where(
+      [type='checkbox'],
+      [type='radio'],
+      [type='file'],
+      [type='color'],
+      [type='button'],
+      [type='submit'],
+      [type='reset']
+    )
+  ),
+[data-platform-theme='agency'] textarea,
+[data-platform-theme='agency'] select {
+  border-color: var(--line);
+  background-color: var(--control);
+  color: var(--ink);
+  -webkit-text-fill-color: var(--ink);
+}
+
+[data-platform-theme='agency'] input:-webkit-autofill,
+[data-platform-theme='agency'] input:-webkit-autofill:hover,
+[data-platform-theme='agency'] input:-webkit-autofill:focus {
+  box-shadow: 0 0 0 1000px var(--control) inset;
+  -webkit-text-fill-color: var(--ink);
+  caret-color: var(--signal);
+}
+
+[data-platform-theme='agency'] ::placeholder {
+  color: #71837d;
+  opacity: 1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 10% -10%,
+      rgb(216 242 63 / 0.18),
+      transparent 30rem
+    ),
+    var(--paper);
+  font-family:
+    Arial,
+    Helvetica Neue,
+    sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--ink);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.surface-grid {
+  background-image:
+    linear-gradient(rgb(16 35 31 / 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(16 35 31 / 0.055) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
