@@ -18,6 +18,7 @@ const updatePasswordSchema = z
   .object({
     password: strongPassword,
     confirmation: z.string(),
+    source: z.enum(['recovery', 'settings']).default('recovery'),
   })
   .refine((values) => values.password === values.confirmation, {
     path: ['confirmation'],
@@ -45,6 +46,7 @@ export async function updatePassword(
   const validated = updatePasswordSchema.safeParse({
     password: formData.get('password'),
     confirmation: formData.get('confirmation'),
+    source: formData.get('source') || 'recovery',
   })
 
   if (!validated.success) {
@@ -70,7 +72,9 @@ export async function updatePassword(
   if (error) {
     return {
       message:
-        'The password could not be changed. Request a new reset link and try again.',
+        validated.data.source === 'settings'
+          ? 'The password could not be changed. Your secure session may be too old; send a reset email and try again.'
+          : 'The password could not be changed. Request a new reset link and try again.',
     }
   }
 

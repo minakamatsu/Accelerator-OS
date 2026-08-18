@@ -16,11 +16,21 @@ export async function PlatformShell({
     accessLevel,
     businesses.length === 1 ? businesses[0].id : undefined,
   )
+  const profileImageHref =
+    access.mode === 'authenticated' && access.avatarPath
+      ? `/api/profile-avatar?v=${encodeURIComponent(access.profileUpdatedAt)}`
+      : null
 
   return (
     <PlatformShellClient
+      accountLabel={
+        access.mode === 'authenticated' && access.displayName
+          ? access.displayName
+          : shell.roleLabel
+      }
       homeHref={shell.homeHref}
       navigation={shell.navigation}
+      profileImageHref={profileImageHref}
       roleLabel={shell.roleLabel}
       theme={accessLevel === 'member' ? 'client' : 'agency'}
     >

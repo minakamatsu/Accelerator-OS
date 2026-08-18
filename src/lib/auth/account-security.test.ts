@@ -39,4 +39,16 @@ describe('account security', () => {
     expect(gate).toContain('supabase.auth.mfa.verify')
     expect(proxy).toContain("'/mfa'")
   })
+
+  it('keeps personal profile changes scoped to the signed-in user', () => {
+    const profileAction = source('src/app/(platform)/settings/actions.ts')
+    const avatarRoute = source('src/app/api/profile-avatar/route.ts')
+
+    expect(profileAction).toContain('supabase.auth.getClaims()')
+    expect(profileAction).toContain(".eq('id', userId)")
+    expect(profileAction).toContain(".from('profile-avatars')")
+    expect(profileAction).not.toContain("formData.get('userId')")
+    expect(avatarRoute).toContain('supabase.auth.getClaims()')
+    expect(avatarRoute).toContain('protectedAssetCacheControl')
+  })
 })

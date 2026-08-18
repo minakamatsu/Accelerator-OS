@@ -32,7 +32,7 @@ function ApprovalControl({
   )
   const title = kind === 'facts' ? 'Verified facts' : 'Design direction'
   return (
-    <div className="rounded-2xl border border-[var(--line)] bg-white p-5">
+    <div className="rounded-2xl border border-[var(--line)] bg-[var(--control)] p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="font-black">{title}</p>
@@ -43,7 +43,7 @@ function ApprovalControl({
           </p>
         </div>
         <span
-          className={`rounded-full px-3 py-1 text-xs font-black ${approvedAt ? 'bg-[#e8f4e8] text-[#245a35]' : 'bg-[#f2efe6] text-[var(--ink-muted)]'}`}
+          className={`rounded-full px-3 py-1 text-xs font-black ${approvedAt ? 'bg-[var(--success-soft)] text-[var(--success-ink)]' : 'bg-[var(--surface-hover)] text-[var(--ink-muted)]'}`}
         >
           {approvedAt ? 'Approved' : 'Pending'}
         </span>
@@ -87,13 +87,13 @@ function StatusControl({
   return (
     <form
       action={formAction}
-      className="rounded-2xl bg-[var(--ink)] p-5 text-white"
+      className="rounded-2xl border border-[var(--line)] bg-[var(--surface-hover)] p-5 text-[var(--ink)]"
     >
-      <p className="text-xs font-black tracking-[0.14em] text-[var(--signal)] uppercase">
+      <p className="text-xs font-black tracking-[0.14em] text-[var(--brand-bright)] uppercase">
         Delivery state
       </p>
       <p className="mt-2 text-xl font-black capitalize">{status}</p>
-      <p className="mt-2 text-sm leading-6 text-white/70">
+      <p className="mt-2 text-sm leading-6 text-[var(--ink-muted)]">
         Activation is a deliberate final gate. Editing approved material returns
         the business to draft.
       </p>
@@ -107,7 +107,7 @@ function StatusControl({
         id="business-status"
         name="status"
         defaultValue={status === 'archived' ? 'draft' : status}
-        className="mt-2 w-full rounded-xl border border-white/20 bg-white px-4 py-3 text-[var(--ink)]"
+        className="mt-2 w-full rounded-xl border border-[var(--line)] bg-[var(--control)] px-4 py-3 text-[var(--ink)]"
       >
         <option value="draft">Draft</option>
         <option value="active" disabled={!canActivate}>
@@ -116,7 +116,7 @@ function StatusControl({
         <option value="suspended">Suspended</option>
       </select>
       {!canActivate ? (
-        <p className="mt-2 text-xs leading-5 text-white/65">
+        <p className="mt-2 text-xs leading-5 text-[var(--ink-muted)]">
           Complete every readiness check to unlock activation.
         </p>
       ) : null}

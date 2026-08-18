@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(18);
+select plan(20);
 
 select ok(
   has_function_privilege('anon', 'public.get_public_site(text)', 'execute'),
@@ -22,6 +22,35 @@ select ok(
     'execute'
   ),
   'anonymous callers cannot bypass the same-origin route handler to record events'
+);
+
+select ok(
+  not has_function_privilege(
+    'authenticated',
+    'public.record_public_site_event(text,text,text,text,text,text,text,text)',
+    'execute'
+  ),
+  'signed-in callers cannot bypass the same-origin route handler to record events'
+);
+
+select ok(
+  coalesce(
+    not has_function_privilege(
+      'anon',
+      to_regprocedure('public.rls_auto_enable()'),
+      'execute'
+    ),
+    true
+  )
+    and coalesce(
+      not has_function_privilege(
+        'authenticated',
+        to_regprocedure('public.rls_auto_enable()'),
+        'execute'
+      ),
+      true
+    ),
+  'the internal RLS event-trigger function is not exposed through the Data API'
 );
 
 set local role anon;

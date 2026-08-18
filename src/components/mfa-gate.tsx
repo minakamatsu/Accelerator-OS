@@ -286,7 +286,7 @@ export function MfaGate({ nextPath }: { nextPath: Route }) {
         <button
           disabled={submitting || code.length !== 6 || !state.factorId}
           type="submit"
-          className="min-h-12 rounded-full bg-[var(--ink)] px-5 font-black text-white transition hover:bg-[var(--brand)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="min-h-12 rounded-full bg-[var(--action)] px-5 font-black text-[var(--action-text)] transition hover:bg-[var(--action-hover)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {submitting
             ? 'Verifying…'

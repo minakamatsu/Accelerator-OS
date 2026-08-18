@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import type { Route } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from '@/app/(auth)/sign-in/actions'
@@ -21,14 +22,18 @@ const sidebarStorageKey = 'accelerator-os-sidebar-collapsed'
 
 export function PlatformShellClient({
   children,
+  accountLabel,
   homeHref,
   navigation,
+  profileImageHref,
   roleLabel,
   theme,
 }: Readonly<{
   children: ReactNode
+  accountLabel: string
   homeHref: Route
   navigation: PlatformNavigationItem[]
+  profileImageHref: string | null
   roleLabel: string
   theme: 'agency' | 'client'
 }>) {
@@ -224,7 +229,18 @@ export function PlatformShellClient({
               className="grid size-11 place-items-center rounded-full border border-[var(--line)] bg-[var(--paper-strong)] text-[var(--ink)] shadow-[var(--shadow-control)] transition hover:border-[var(--brand-bright)] hover:bg-[var(--surface-hover)]"
               onClick={() => setProfileMenuOpen((isOpen) => !isOpen)}
             >
-              <UserIcon className="size-5" />
+              {profileImageHref ? (
+                <Image
+                  src={profileImageHref}
+                  alt=""
+                  width={44}
+                  height={44}
+                  unoptimized
+                  className="size-full rounded-full object-cover"
+                />
+              ) : (
+                <UserIcon className="size-5" />
+              )}
             </button>
 
             {profileMenuOpen ? (
@@ -237,7 +253,12 @@ export function PlatformShellClient({
                   <p className="text-xs font-black tracking-[0.12em] text-[var(--brand-bright)] uppercase">
                     Signed in as
                   </p>
-                  <p className="mt-1 text-sm font-bold">{roleLabel}</p>
+                  <p className="mt-1 truncate text-sm font-bold">
+                    {accountLabel}
+                  </p>
+                  <p className="mt-1 text-xs text-[var(--ink-muted)]">
+                    {roleLabel}
+                  </p>
                 </div>
                 <Link
                   href={homeHref}

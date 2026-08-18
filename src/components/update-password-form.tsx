@@ -8,11 +8,16 @@ import {
 
 const initialState: UpdatePasswordState = { message: null }
 
-export function UpdatePasswordForm() {
+export function UpdatePasswordForm({
+  source = 'recovery',
+}: {
+  source?: 'recovery' | 'settings'
+}) {
   const [state, action, pending] = useActionState(updatePassword, initialState)
 
   return (
     <form action={action} className="mt-8 grid gap-5">
+      <input type="hidden" name="source" value={source} />
       <label className="grid gap-2 text-sm font-bold">
         New password
         <input
@@ -64,7 +69,7 @@ export function UpdatePasswordForm() {
       <button
         disabled={pending}
         type="submit"
-        className="min-h-12 rounded-full bg-[var(--ink)] px-5 font-black text-white transition hover:bg-[var(--brand)] disabled:cursor-not-allowed disabled:opacity-50"
+        className="min-h-12 rounded-full bg-[var(--action)] px-5 font-black text-[var(--action-text)] transition hover:bg-[var(--action-hover)] disabled:cursor-not-allowed disabled:opacity-50"
       >
         {pending
           ? 'Securing account…'

@@ -1,6 +1,6 @@
 # Delivery Plan
 
-Status: Milestones 1 through 10 and the notification-reporting navigation revision are complete. Account recovery and mandatory administrator MFA are implemented, locally validated, and configured in hosted Supabase; production activation awaits deployment. The agency administrator form-contrast correction is implemented and awaits a refreshed signed-in visual confirmation. Live Resend activation, the real-site analytics pilot, and Square billing follow later.
+Status: Milestones 1 through 10, notification reporting, account recovery, and mandatory administrator MFA are deployed. The whole-project maintenance and personal account-settings follow-ups are locally validated and await review before publication. Live Resend activation, the real-site analytics pilot, and Square billing follow later.
 
 Scope changes are recorded here before implementation. Milestones are completed and reviewed one at a time.
 
@@ -304,7 +304,7 @@ Completion record:
 - Validation passed: formatting, lint, strict type-check, 72 application tests, production build, a clean local database rebuild, and all 107 database tests.
 - Desktop and phone browser review passed for the client-business roster and email-notification reporting with no horizontal page overflow; computed styles confirmed the agency theme boundary, dark surfaces, and distinct metric colors.
 
-## Milestone 10 UI correction — Agency form contrast and add action (active 2026-08-17)
+## Milestone 10 UI correction — Agency form contrast and add action (implemented 2026-08-17; visual confirmation pending)
 
 Objective: correct the agency form’s white-text-on-white-field regression and replace the oversized wrapping add-business action with a compact, deliberate control.
 
@@ -323,7 +323,7 @@ Implementation record:
 - Formatting, lint, strict type-check, 73 application tests, and the production build pass. The production stylesheet contains the agency field override and the production server bundle contains the revised add-business action.
 - A refreshed signed-in computed-style and responsive screenshot check remains because the required database reset expired the local browser session.
 
-## Milestone 10 security follow-up — Account recovery and administrator MFA (active 2026-08-17)
+## Milestone 10 security follow-up — Account recovery and administrator MFA (complete and deployed 2026-08-17)
 
 Objective: give every agency-issued account a safe password-recovery path and require a verified authenticator-app code before any platform administrator can access tenant data.
 
@@ -354,6 +354,60 @@ Implementation record:
 - Revoked legacy anonymous execution grants on the three lead-mutation functions discovered during the hosted security review; a follow-up privilege query confirms all three are denied and the security advisor reports no related warning or error.
 - Validation passed: formatting, lint, strict type-check, 80 application tests, production build, a clean local database rebuild, and all 109 pgTAP tests. Desktop browser review passed for recovery and password update, and the MFA enrollment UI was exercised through QR generation and interrupted-setup recovery.
 - Reconciled the hosted import ledger with all 12 repository migration filenames after explicit approval and verified an exact version/name match, preventing a future migration-driven deployment from rerunning the initialized schema.
+
+## Maintenance follow-up — Security boundaries and product accuracy (ready for review 2026-08-18)
+
+Objective: audit the deployed application as a full-stack maintenance pass without expanding product scope or changing live services before review.
+
+Implementation record:
+
+- Centralized authentication return-path validation and rejected slash/backslash variants that browsers can interpret as an external origin.
+- Prepared least-privilege database grants so public lead capture and analytics recording remain callable only through the verified server routes, not directly through anonymous Data API RPC calls.
+- Removed the stale fictional-site homepage link and aligned the landing-page descriptions with the current analytics-first product.
+- Reviewed application routing, authenticated mutations, tenancy checks, RLS coverage, hosted advisors, dependency health, runtime/build logs, and representative mobile/desktop public and authentication screens.
+- Validation passed: formatting, lint, strict type-check, all 88 application tests, a clean database rebuild, all 112 pgTAP tests, and the production build. The migration and application changes remain unpublished until explicit approval.
+
+## Account settings follow-up — Personal profile and password rotation (ready for review 2026-08-18)
+
+Objective: let each authenticated user manage their own display name, private profile picture, and password from one clear settings surface without creating a second identity system or storing readable credentials in Accelerator OS.
+
+Deliverables:
+
+- Expose the existing self-owned profile display name with clear separation from the sign-in email.
+- Store optional profile pictures in a private, two-megabyte, user-namespaced Supabase Storage bucket.
+- Show the current picture in settings and the workspace profile control without exposing a public asset URL.
+- Keep password changes in Supabase Auth, preserve the strong-password policy, and revoke refresh sessions globally after a successful change.
+- Provide the existing non-enumerating reset-email path when a signed-in session is too old to authorize a direct password change.
+
+Acceptance:
+
+- Server actions derive the profile owner exclusively from verified authentication claims and cannot update another user or the authorization role.
+- Avatar uploads accept only validated JPG, PNG, or WebP files no larger than two megabytes.
+- Storage read, insert, update, and delete policies restrict every avatar object to its owning user namespace.
+- Password values never enter an application database, log, URL, or client-readable response.
+- Formatting, lint, type-check, application tests, production build, clean database reset, database tests, and authenticated mobile/desktop review pass.
+
+Completion record:
+
+- Added self-service display-name editing while keeping the sign-in email separate and unchanged.
+- Added a private `profile-avatars` bucket with a two-megabyte limit, JPG/PNG/WebP signature validation, user-namespaced object paths, and owner-only read/write/delete policies.
+- Added an authenticated, no-store avatar route and used it in both settings and the workspace profile control without exposing a public asset URL.
+- Clarified the direct password-change experience, preserved the strong-password checks and global refresh-session revocation, and retained the reset-email fallback for expired secure sessions.
+- Validation passed: formatting, lint, strict type-check, all 92 application tests, production build, clean database rebuild, all 121 pgTAP tests, and local database security/performance advisors with no new profile-related findings.
+- Desktop and phone review passed for settings and password rotation with no horizontal overflow, framework overlay, or browser console warning. No real password was entered during verification.
+
+## UI correction — Cross-theme surface contrast (complete 2026-08-18)
+
+Objective: remove white-on-white and light-on-light regressions caused by using text-color tokens or hard-coded light surfaces as administrator-theme backgrounds.
+
+Completion record:
+
+- Replaced the affected settings/home action treatment and every remaining platform-only light surface with semantic action, control, paper, hover, success, and foreground tokens.
+- Corrected the older business-roster, onboarding approval, brand, service, asset, recipient, and lead-error components so each remains readable in either the dark agency workspace or light client portal.
+- Converted shared authentication and error actions from the foreground `--ink` token to the dedicated `--action` and `--action-text` pair, preventing the same failure if those controls are rendered inside another theme boundary.
+- Added a regression test that checks WCAG AA contrast for both theme token sets and rejects hard-coded light surfaces or foreground-token backgrounds in platform UI source.
+- Validation passed: formatting, lint, strict type-check, all 94 application tests, production build, a clean database rebuild, and all 121 pgTAP tests.
+- Browser review passed for agency settings, sign-in, and password recovery at desktop and phone widths with zero detected text/background contrast failures and no horizontal page overflow. Data-backed agency screens remain protected by the same source-level semantic-surface guard.
 
 ## Milestone 11 — Square billing status
 

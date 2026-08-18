@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BrandMark } from '@/components/brand-mark'
 import { SignInForm } from '@/components/sign-in-form'
+import { safeNextPath } from '@/lib/auth/safe-next-path'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
 
 export const metadata: Metadata = {
@@ -15,8 +16,7 @@ type Props = {
 export default async function SignInPage({ searchParams }: Props) {
   const configured = isSupabaseConfigured()
   const { next, notice, error } = await searchParams
-  const nextPath =
-    next?.startsWith('/') && !next.startsWith('//') ? next : '/portal'
+  const nextPath = safeNextPath(next, '/portal')
 
   return (
     <div className="grid min-h-screen lg:grid-cols-[0.78fr_1.22fr]">

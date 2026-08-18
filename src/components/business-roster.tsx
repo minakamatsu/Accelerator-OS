@@ -48,7 +48,7 @@ export function BusinessRoster({
               {showManage ? (
                 <Link
                   href={`/admin/businesses/${business.id}/onboarding` as Route}
-                  className="rounded-xl bg-[var(--ink)] px-4 py-2 text-sm font-black text-white transition hover:bg-[var(--brand)]"
+                  className="rounded-xl bg-[var(--action)] px-4 py-2 text-sm font-black text-[var(--action-text)] transition hover:bg-[var(--action-hover)]"
                 >
                   Onboard
                 </Link>
@@ -56,7 +56,7 @@ export function BusinessRoster({
               {showPreview ? (
                 <a
                   href={`/portal/businesses/${business.id}/website-preview`}
-                  className="rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm font-black text-[var(--ink)] transition hover:border-[var(--brand)]"
+                  className="rounded-xl border border-[var(--line)] bg-[var(--control)] px-4 py-2 text-sm font-black text-[var(--ink)] transition hover:border-[var(--brand)] hover:bg-[var(--control-hover)]"
                 >
                   Preview website
                 </a>

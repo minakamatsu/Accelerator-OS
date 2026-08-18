@@ -12,6 +12,9 @@ export type AccessContext =
       email: null
       platformRole: null
       assuranceLevel: null
+      displayName: null
+      avatarPath: null
+      profileUpdatedAt: null
     }
   | {
       mode: 'authenticated'
@@ -19,6 +22,9 @@ export type AccessContext =
       email: string | null
       platformRole: 'admin' | 'member'
       assuranceLevel: 'aal1' | 'aal2'
+      displayName: string
+      avatarPath: string | null
+      profileUpdatedAt: string
     }
 
 export const getPrimaryAccessContext = cache(
@@ -30,6 +36,9 @@ export const getPrimaryAccessContext = cache(
         email: null,
         platformRole: null,
         assuranceLevel: null,
+        displayName: null,
+        avatarPath: null,
+        profileUpdatedAt: null,
       }
     }
 
@@ -49,7 +58,7 @@ export const getPrimaryAccessContext = cache(
 
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('platform_role')
+      .select('platform_role, display_name, avatar_path, updated_at')
       .eq('id', subject)
       .single()
 
@@ -63,6 +72,9 @@ export const getPrimaryAccessContext = cache(
       email,
       platformRole: profile.platform_role,
       assuranceLevel,
+      displayName: profile.display_name,
+      avatarPath: profile.avatar_path,
+      profileUpdatedAt: profile.updated_at,
     }
   },
 )

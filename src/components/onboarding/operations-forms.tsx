@@ -141,7 +141,7 @@ function ServiceEditor({
   )
 
   return (
-    <details className="group rounded-2xl border border-[var(--line)] bg-white">
+    <details className="group rounded-2xl border border-[var(--line)] bg-[var(--control)]">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 marker:hidden">
         <span>
           <span className="font-black">{service.name}</span>
@@ -197,10 +197,10 @@ export function ServicesManager({
         </div>
       )}
       <details
-        className="rounded-2xl bg-[#edf4f0] p-5"
+        className="rounded-2xl bg-[var(--surface-hover)] p-5"
         open={services.length === 0}
       >
-        <summary className="cursor-pointer font-black text-[var(--brand)]">
+        <summary className="cursor-pointer font-black text-[var(--brand-bright)]">
           Add a verified service
         </summary>
         <div className="mt-5">
@@ -224,8 +224,8 @@ function AssetCard({
     initialOnboardingActionState,
   )
   return (
-    <article className="overflow-hidden rounded-2xl border border-[var(--line)] bg-white">
-      <div className="relative aspect-[4/3] bg-[#e8ede8]">
+    <article className="overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--control)]">
+      <div className="relative aspect-[4/3] bg-[var(--surface-hover)]">
         {asset.previewUrl ? (
           <Image
             src={asset.previewUrl}
@@ -239,7 +239,7 @@ function AssetCard({
       </div>
       <div className="grid gap-3 p-5">
         <div className="flex items-center justify-between gap-3">
-          <span className="rounded-full bg-[#edf4f0] px-3 py-1 text-xs font-black uppercase">
+          <span className="rounded-full bg-[var(--surface-hover)] px-3 py-1 text-xs font-black uppercase">
             {asset.kind}
           </span>
           <span className="text-xs font-bold text-[var(--ink-muted)]">
@@ -287,7 +287,7 @@ export function AssetsManager({
       ) : null}
       <form
         action={formAction}
-        className="grid gap-5 rounded-2xl border border-dashed border-[var(--line)] bg-[#faf9f4] p-5 sm:p-6"
+        className="grid gap-5 rounded-2xl border border-dashed border-[var(--line)] bg-[var(--paper)] p-5 sm:p-6"
       >
         <div>
           <p className="font-black">Upload an approved image</p>
@@ -303,7 +303,7 @@ export function AssetsManager({
               name="file"
               type="file"
               accept="image/jpeg,image/png,image/webp"
-              className={`${fieldClass} file:mr-4 file:rounded-lg file:border-0 file:bg-[var(--ink)] file:px-3 file:py-2 file:text-xs file:font-black file:text-white`}
+              className={`${fieldClass} file:mr-4 file:rounded-lg file:border-0 file:bg-[var(--action)] file:px-3 file:py-2 file:text-xs file:font-black file:text-[var(--action-text)]`}
               required
             />
           </Field>
@@ -387,7 +387,7 @@ function RecipientRow({
     initialOnboardingActionState,
   )
   return (
-    <li className="flex flex-col gap-3 rounded-xl border border-[var(--line)] bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+    <li className="flex flex-col gap-3 rounded-xl border border-[var(--line)] bg-[var(--control)] p-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p className="font-bold">{recipient.address}</p>
         <p className="mt-1 text-xs text-[var(--ink-muted)]">
@@ -436,7 +436,7 @@ export function RecipientsManager({
       )}
       <form
         action={formAction}
-        className="grid gap-4 rounded-2xl bg-[#edf4f0] p-5 sm:grid-cols-[1fr_auto] sm:items-end"
+        className="grid gap-4 rounded-2xl bg-[var(--surface-hover)] p-5 sm:grid-cols-[1fr_auto] sm:items-end"
       >
         <Field
           label="Shop notification email"

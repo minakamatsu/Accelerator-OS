@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(20);
+select plan(21);
 
 select ok(
   not has_function_privilege(
@@ -12,6 +12,15 @@ select ok(
     'execute'
   ),
   'anonymous callers cannot invoke the server-only lead capture function'
+);
+
+select ok(
+  not has_function_privilege(
+    'authenticated',
+    'public.capture_public_lead(text,text,text,text,text,text,text,text,smallint,text,text,text,text,text,text,text,text,text)',
+    'execute'
+  ),
+  'signed-in callers cannot bypass the server-only lead capture path'
 );
 
 select ok(

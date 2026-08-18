@@ -21,7 +21,7 @@ export default function ErrorPage({
         <button
           type="button"
           onClick={reset}
-          className="mt-8 rounded-full bg-[var(--ink)] px-5 py-3 text-sm font-black text-white"
+          className="mt-8 rounded-full bg-[var(--action)] px-5 py-3 text-sm font-black text-[var(--action-text)] hover:bg-[var(--action-hover)]"
         >
           Try again
         </button>

@@ -46,7 +46,7 @@ export function ForgotPasswordForm({ configured }: { configured: boolean }) {
         <button
           disabled={!configured || pending}
           type="submit"
-          className="min-h-12 rounded-full bg-[var(--ink)] px-5 font-black text-white transition hover:bg-[var(--brand)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="min-h-12 rounded-full bg-[var(--action)] px-5 font-black text-[var(--action-text)] transition hover:bg-[var(--action-hover)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? 'Sending secure link…' : 'Email me a reset link'}
         </button>

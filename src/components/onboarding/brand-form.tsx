@@ -26,8 +26,8 @@ export function BrandForm({
 
   return (
     <form action={formAction} className="grid gap-7">
-      <div className="rounded-2xl border border-[#cbd7d1] bg-[#edf4f0] p-5">
-        <p className="text-sm font-black text-[var(--brand)]">
+      <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface-hover)] p-5">
+        <p className="text-sm font-black text-[var(--brand-bright)]">
           Design direction requires client approval
         </p>
         <p className="mt-2 text-sm leading-6 text-[var(--ink-muted)]">

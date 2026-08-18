@@ -77,7 +77,7 @@ export function SignInForm({
       <button
         disabled={!configured || pending}
         type="submit"
-        className="rounded-full bg-[var(--ink)] px-5 py-3 font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-full bg-[var(--action)] px-5 py-3 font-black text-[var(--action-text)] transition hover:bg-[var(--action-hover)] disabled:cursor-not-allowed disabled:opacity-50"
       >
         {pending
           ? 'Signing in…'

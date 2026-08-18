@@ -1,8 +1,8 @@
 'use server'
 
-import type { Route } from 'next'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { safeNextPath } from '@/lib/auth/safe-next-path'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
 import { createClient } from '@/lib/supabase/server'
 
@@ -18,12 +18,6 @@ export type SignInState = {
     email?: string[]
     password?: string[]
   }
-}
-
-function safeNextPath(value: string | undefined): Route {
-  if (!value || !value.startsWith('/') || value.startsWith('//'))
-    return '/portal'
-  return value as Route
 }
 
 export async function signIn(
@@ -57,7 +51,7 @@ export async function signIn(
     return { message: 'The email or password was not accepted.' }
   }
 
-  redirect(safeNextPath(validated.data.next))
+  redirect(safeNextPath(validated.data.next, '/portal'))
 }
 
 export async function signOut() {

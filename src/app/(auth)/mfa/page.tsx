@@ -1,8 +1,9 @@
-import type { Metadata, Route } from 'next'
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { BrandMark } from '@/components/brand-mark'
 import { MfaGate } from '@/components/mfa-gate'
 import { getPrimaryAccessContext } from '@/lib/auth/guards'
+import { safeNextPath } from '@/lib/auth/safe-next-path'
 
 export const metadata: Metadata = {
   title: 'Two-step verification',
@@ -12,16 +13,10 @@ type Props = {
   searchParams: Promise<{ next?: string }>
 }
 
-function safeNextPath(value: string | undefined): Route {
-  if (!value || !value.startsWith('/') || value.startsWith('//'))
-    return '/admin'
-  return value as Route
-}
-
 export default async function MfaPage({ searchParams }: Props) {
   const access = await getPrimaryAccessContext()
   const { next } = await searchParams
-  const nextPath = safeNextPath(next)
+  const nextPath = safeNextPath(next, '/admin')
 
   if (access.mode === 'development') redirect('/sign-in')
   if (access.platformRole !== 'admin') redirect('/portal')

@@ -5,27 +5,27 @@ import { ArrowIcon } from '@/components/icons'
 const surfaces = [
   {
     eyebrow: 'Agency workspace',
-    title: 'Operate every account from one place.',
+    title: 'Keep every client account in one place.',
     description:
-      'Onboard businesses, review readiness, and watch the lead system without repeating the setup work.',
+      'Maintain contact details, connect live websites, and review performance across the agency.',
     href: '/admin' as const,
-    label: 'Open admin shell',
+    label: 'Open agency workspace',
   },
   {
     eyebrow: 'Client workspace',
-    title: 'Keep the lead handoff simple.',
+    title: 'See website performance without the noise.',
     description:
-      'A focused portal for client teams to respond, update outcomes, and understand recorded performance.',
+      'A focused, one-business dashboard for visitors, popular pages, traffic sources, and customer actions.',
     href: '/portal' as const,
-    label: 'Open portal shell',
+    label: 'Open client dashboard',
   },
   {
-    eyebrow: 'Public experience',
-    title: 'Preview the site delivery surface.',
+    eyebrow: 'Connected websites',
+    title: 'Measure the websites you already publish.',
     description:
-      'Business facts and an original design will appear here after the onboarding approval gate.',
-    href: '/site/pilot-auto' as const,
-    label: 'Open site shell',
+      'Install one revocable tracking connection, then share clear website analytics with each business owner.',
+    href: '/sign-in' as const,
+    label: 'Sign in to view sites',
   },
 ]
 
@@ -37,7 +37,7 @@ export default function HomePage() {
           <BrandMark />
           <Link
             href="/sign-in"
-            className="rounded-full border border-[var(--ink)] px-4 py-2 text-sm font-bold transition-colors hover:bg-[var(--ink)] hover:text-white"
+            className="rounded-full border border-[var(--ink)] px-4 py-2 text-sm font-bold transition-colors hover:bg-[var(--action)] hover:text-[var(--action-text)]"
           >
             Sign in
           </Link>
@@ -47,21 +47,21 @@ export default function HomePage() {
           <div className="flex flex-col justify-between gap-16 border-b border-[var(--line)] p-7 sm:p-12 lg:border-r lg:border-b-0 lg:p-16">
             <div>
               <p className="mb-6 inline-flex rounded-full bg-[var(--signal)] px-3 py-1 text-xs font-black tracking-[0.14em] uppercase">
-                Tenant foundation · Milestone 2
+                Agency operations · Analytics first
               </p>
               <h1 className="max-w-4xl text-5xl leading-[0.96] font-black tracking-[-0.055em] text-balance sm:text-7xl">
                 Turn repeat work into a dependable system.
               </h1>
               <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--ink-muted)]">
                 Accelerator OS is the internal control room for launching and
-                operating lead-capture systems for local automotive businesses.
+                measuring websites for local automotive businesses.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm font-bold text-[var(--ink-muted)]">
-              <span>Verified business facts</span>
+              <span>Client roster</span>
               <span>Tenant-safe by design</span>
-              <span>Recorded outcomes</span>
+              <span>Clear website analytics</span>
             </div>
           </div>
 
