@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 }
 
 type Props = {
-  searchParams: Promise<{ next?: string }>
+  searchParams: Promise<{ next?: string; notice?: string; error?: string }>
 }
 
 export default async function SignInPage({ searchParams }: Props) {
   const configured = isSupabaseConfigured()
-  const { next } = await searchParams
+  const { next, notice, error } = await searchParams
   const nextPath =
     next?.startsWith('/') && !next.startsWith('//') ? next : '/portal'
 
@@ -52,6 +52,18 @@ export default async function SignInPage({ searchParams }: Props) {
               ? 'Use an agency-issued account. Public signup is disabled.'
               : 'Supabase Auth is not configured in this environment.'}
           </p>
+          {notice === 'password-updated' ? (
+            <p className="mt-5 rounded-xl bg-emerald-50 p-4 text-sm leading-6 font-bold text-emerald-900">
+              Your password was changed and other sessions were signed out. Use
+              the new password to continue.
+            </p>
+          ) : null}
+          {error === 'invalid-link' ? (
+            <p className="mt-5 rounded-xl bg-red-50 p-4 text-sm leading-6 font-bold text-red-900">
+              That secure link is invalid or expired. Request a new password
+              reset link.
+            </p>
+          ) : null}
           <SignInForm configured={configured} nextPath={nextPath} />
           <Link
             href="/"

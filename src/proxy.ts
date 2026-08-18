@@ -10,7 +10,7 @@ import {
   publicSiteRewritePath,
 } from '@/lib/public-site/tenant'
 
-const protectedPrefixes = ['/admin', '/portal']
+const protectedPrefixes = ['/admin', '/portal', '/mfa', '/update-password']
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl

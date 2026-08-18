@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(16);
+select plan(18);
 
 select is_empty(
   $$
@@ -28,6 +28,25 @@ select is_empty(
 select ok(
   not has_table_privilege('anon', 'public.leads', 'select'),
   'anonymous callers have no direct lead read grant'
+);
+
+select ok(
+  not has_function_privilege(
+    'anon',
+    'public.set_lead_status(uuid,uuid,public.lead_status,text)',
+    'execute'
+  )
+  and not has_function_privilege(
+    'anon',
+    'public.set_lead_values(uuid,uuid,bigint,bigint)',
+    'execute'
+  )
+  and not has_function_privilege(
+    'anon',
+    'public.add_lead_note(uuid,uuid,text)',
+    'execute'
+  ),
+  'anonymous callers cannot invoke authenticated lead mutations'
 );
 
 set local role authenticated;
@@ -119,7 +138,18 @@ select is_empty(
 
 select set_config(
   'request.jwt.claims',
-  '{"sub":"00000000-0000-4000-8000-000000000001","role":"authenticated"}',
+  '{"sub":"00000000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal1"}',
+  true
+);
+
+select is_empty(
+  $$ select id from public.businesses $$,
+  'a platform administrator without MFA cannot read tenant data'
+);
+
+select set_config(
+  'request.jwt.claims',
+  '{"sub":"00000000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal2"}',
   true
 );
 

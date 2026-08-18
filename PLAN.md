@@ -1,6 +1,6 @@
 # Delivery Plan
 
-Status: Milestones 1 through 10 and the notification-reporting navigation revision are complete. The agency administrator form-contrast correction is implemented and awaits a refreshed signed-in visual confirmation. Live Resend activation is the approved next integration; the real-site analytics pilot and Square billing follow later.
+Status: Milestones 1 through 10 and the notification-reporting navigation revision are complete. Account recovery and mandatory administrator MFA are implemented, locally validated, and configured in hosted Supabase; production activation awaits deployment. The agency administrator form-contrast correction is implemented and awaits a refreshed signed-in visual confirmation. Live Resend activation, the real-site analytics pilot, and Square billing follow later.
 
 Scope changes are recorded here before implementation. Milestones are completed and reviewed one at a time.
 
@@ -323,6 +323,38 @@ Implementation record:
 - Formatting, lint, strict type-check, 73 application tests, and the production build pass. The production stylesheet contains the agency field override and the production server bundle contains the revised add-business action.
 - A refreshed signed-in computed-style and responsive screenshot check remains because the required database reset expired the local browser session.
 
+## Milestone 10 security follow-up — Account recovery and administrator MFA (active 2026-08-17)
+
+Objective: give every agency-issued account a safe password-recovery path and require a verified authenticator-app code before any platform administrator can access tenant data.
+
+Deliverables:
+
+- Add a non-enumerating forgot-password flow and a recovery-session-only password-update screen.
+- Keep Supabase Auth as the single identity provider so existing user IDs, memberships, sessions, and RLS policies remain authoritative.
+- Add authenticator-app enrollment and challenge screens using Supabase TOTP MFA.
+- Require `aal2` for platform-administrator access in both server guards and database administrator authorization.
+- Invite the requested agency-owner email only after the hosted schema is initialized, then assign the administrator role without storing the email or any credential in source control.
+
+Acceptance:
+
+- Password-reset requests return the same calm response whether or not an account exists.
+- A valid recovery link can establish a session, accept a policy-compliant password, revoke existing sessions, and return the user to sign-in.
+- An administrator at `aal1` is sent to MFA setup/challenge and cannot read or mutate tenant data through the application or database policies.
+- A verified TOTP challenge upgrades the session to `aal2` and restores the intended administrator destination.
+- Client accounts retain their existing analytics-only experience and are not forced into administrator MFA.
+- Formatting, lint, type-check, application tests, production build, database tests, security advisors, and mobile/desktop authentication review pass.
+
+Implementation record:
+
+- Kept Supabase Auth as the single identity provider and added non-enumerating password-reset requests, PKCE recovery confirmation, policy-compliant password updates, and global session revocation after a successful change.
+- Added administrator TOTP enrollment and challenge screens, including safe cleanup of interrupted unverified enrollments so a refresh cannot strand the account.
+- Enforced administrator `aal2` in both server navigation guards and the database helper used by administrator RLS policies; an administrator password without the second factor no longer authorizes tenant-wide data access.
+- Initialized the hosted schema, backfilled the existing confirmed agency-owner account, and assigned its profile the `admin` platform role without storing the email or credentials in source control.
+- Enabled hosted authenticator-app MFA, limited AAL1 session duration to 15 minutes, set the production Site URL, and allowed the exact localhost and Vercel-preview redirect patterns needed for recovery testing and deployments.
+- Revoked legacy anonymous execution grants on the three lead-mutation functions discovered during the hosted security review; a follow-up privilege query confirms all three are denied and the security advisor reports no related warning or error.
+- Validation passed: formatting, lint, strict type-check, 80 application tests, production build, a clean local database rebuild, and all 109 pgTAP tests. Desktop browser review passed for recovery and password update, and the MFA enrollment UI was exercised through QR generation and interrupted-setup recovery.
+- Reconciled the hosted import ledger with all 12 repository migration filenames after explicit approval and verified an exact version/name match, preventing a future migration-driven deployment from rerunning the initialized schema.
+
 ## Milestone 11 — Square billing status
 
 Deliverables: hosted-checkout adapter, subscription records, signature-verified idempotent webhooks, normalized states, agency notifications, and manual suspension flow.
@@ -351,11 +383,12 @@ Manual input: authorized hosting/domain access, production credentials, approved
 
 ## Approved next execution order (updated 2026-08-17)
 
-1. Activate the existing Resend business-notification adapter with a verified agency sender domain and server-only credentials.
-2. Add and verify the real shop recipient email for each business, then send one controlled test request and reconcile it in the delivery log.
-3. Run the first real-site analytics pilot using the existing external tracking connection.
-4. Complete production readiness, domain, backup, rollback, and pilot checks.
-5. Revisit Square billing only when the agency actually needs billing status inside Accelerator OS.
+1. Complete account recovery, mandatory administrator MFA, and the agency-owner account invitation.
+2. Activate the existing Resend business-notification adapter with a verified agency sender domain and server-only credentials.
+3. Add and verify the real shop recipient email for each business, then send one controlled test request and reconcile it in the delivery log.
+4. Run the first real-site analytics pilot using the existing external tracking connection.
+5. Complete production readiness, domain, backup, rollback, and pilot checks.
+6. Revisit Square billing only when the agency actually needs billing status inside Accelerator OS.
 
 ## Validation commands
 

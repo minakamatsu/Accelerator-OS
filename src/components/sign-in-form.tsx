@@ -1,6 +1,8 @@
 'use client'
 
+import type { Route } from 'next'
 import { useActionState } from 'react'
+import Link from 'next/link'
 import { signIn, type SignInState } from '@/app/(auth)/sign-in/actions'
 
 const initialSignInState: SignInState = { message: null }
@@ -64,6 +66,14 @@ export function SignInForm({
           </span>
         )}
       </label>
+      <div className="-mt-2 flex justify-end">
+        <Link
+          href={'/forgot-password' as Route}
+          className="text-sm font-bold text-[var(--brand)] underline decoration-[var(--line)] underline-offset-4 hover:decoration-current"
+        >
+          Forgot password?
+        </Link>
+      </div>
       <button
         disabled={!configured || pending}
         type="submit"

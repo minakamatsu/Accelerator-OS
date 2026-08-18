@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Route } from 'next'
 import Link from 'next/link'
 import { listAccessibleBusinesses } from '@/data/businesses'
 import { requireAuthenticatedUser } from '@/lib/auth/guards'
@@ -43,6 +43,14 @@ export default async function SettingsPage() {
             {shell.roleLabel}
           </h2>
           <dl className="mt-6 grid gap-4 text-sm">
+            {access.mode === 'authenticated' && access.email ? (
+              <div className="flex items-center justify-between gap-4 border-t border-[var(--line)] pt-4">
+                <dt className="text-[var(--ink-muted)]">Email</dt>
+                <dd className="max-w-[65%] truncate text-right font-bold">
+                  {access.email}
+                </dd>
+              </div>
+            ) : null}
             <div className="flex items-center justify-between gap-4 border-t border-[var(--line)] pt-4">
               <dt className="text-[var(--ink-muted)]">Access level</dt>
               <dd className="font-bold capitalize">{accessLevel}</dd>
@@ -69,16 +77,29 @@ export default async function SettingsPage() {
             Workspace preferences
           </p>
           <h2 className="mt-2 text-2xl font-black tracking-[-0.03em]">
-            Sidebar display
+            Account security
           </h2>
           <p className="mt-4 leading-7 text-[var(--ink-muted)]">
-            Use the arrow beside the Accelerator OS logo to collapse or expand
-            the desktop sidebar. Your preference is remembered on this device.
+            Change your password through a protected session. Agency
+            administrators must also verify an authenticator-app code whenever
+            they sign in.
           </p>
-          <div className="mt-7 rounded-xl bg-[#edf0e9] p-4 text-sm leading-6 text-[var(--ink-muted)]">
-            Account identity, role changes, and password recovery remain managed
-            through secure authentication and agency access controls.
-          </div>
+          <dl className="mt-6 grid gap-4 text-sm">
+            <div className="flex items-center justify-between gap-4 border-t border-[var(--line)] pt-4">
+              <dt className="text-[var(--ink-muted)]">Two-step verification</dt>
+              <dd className="font-bold">
+                {accessLevel === 'admin'
+                  ? 'Required and verified'
+                  : 'Not required'}
+              </dd>
+            </div>
+          </dl>
+          <Link
+            href={'/update-password' as Route}
+            className="mt-7 inline-flex min-h-11 items-center rounded-full bg-[var(--action)] px-5 text-sm font-black text-[var(--action-text)] transition hover:bg-[var(--action-hover)]"
+          >
+            Change password
+          </Link>
         </section>
       </div>
     </div>

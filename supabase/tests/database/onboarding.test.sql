@@ -42,7 +42,7 @@ select is_empty(
 
 select set_config(
   'request.jwt.claims',
-  '{"sub":"00000000-0000-4000-8000-000000000001","role":"authenticated"}',
+  '{"sub":"00000000-0000-4000-8000-000000000001","role":"authenticated","aal":"aal2"}',
   true
 );
 
