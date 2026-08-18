@@ -26,6 +26,10 @@ export function getPlatformNavigation(
         ? [
             { href: homeHref, label: 'Dashboard', exact: true },
             {
+              href: `/portal/businesses/${businessId}/leads` as Route,
+              label: 'Website leads',
+            },
+            {
               href: `/portal/businesses/${businessId}/website-preview` as Route,
               label: 'View website',
               exact: true,

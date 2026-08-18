@@ -409,6 +409,41 @@ Completion record:
 - Validation passed: formatting, lint, strict type-check, all 94 application tests, production build, a clean database rebuild, and all 121 pgTAP tests.
 - Browser review passed for agency settings, sign-in, and password recovery at desktop and phone widths with zero detected text/background contrast failures and no horizontal page overflow. Data-backed agency screens remain protected by the same source-level semantic-surface guard.
 
+## Client reporting follow-up — Simple website lead register (complete locally 2026-08-18)
+
+Objective: let a business owner review the quote requests produced by the website without turning Accelerator OS into a CRM or requiring the owner to maintain lead stages.
+
+Deliverables:
+
+- Add a secondary Website leads page for each client business.
+- Show an accessible leads-over-time bar chart for the same 24-hour, 7-day, 30-day, and 90-day periods used by website analytics.
+- Present accepted quote requests in a simple spreadsheet-style list containing the submitted date, customer, contact details, vehicle, and request.
+- Add one plain search field across submitted lead details and an exact calendar-date filter using the business reporting timezone.
+- Keep the report read-only; do not restore pipeline stages, estimates, values, notes, messaging, or won/lost workflow controls.
+- Retire old individual lead workflow URLs by returning them to the Website leads report.
+
+Acceptance:
+
+- A client can move between the analytics dashboard, Website leads report, and public website from the existing single-business navigation.
+- The reporting count and chart reconcile with accepted quote-request rows for the selected period.
+- Search and date filters never reveal another business's records and preserve the selected reporting period.
+- Desktop uses a compact table while mobile presents the same data as clear, readable rows without horizontal page overflow.
+- Formatting, lint, type-check, application tests, production build, database tests, and authenticated client mobile/desktop review pass.
+
+Completion record:
+
+- Added Website leads as a secondary destination beside the single-business analytics dashboard and public website link.
+- Replaced the retired pipeline screen with a read-only report containing 24-hour, 7-day, 30-day, and 90-day periods, an accessible request-volume bar chart, and accepted quote-request rows only.
+- Added one broad search across customer, contact, vehicle, and request details plus an exact submitted-date filter evaluated in the business reporting timezone.
+- Kept filtering near the lead list, preserved calm zero-result states, and made the desktop spreadsheet become labeled mobile rows without exposing status, value, note, messaging, or won/lost controls.
+- Redirected legacy individual lead-workflow URLs to the Website leads report and kept every report query authenticated, explicitly scoped by `business_id`, and protected by the existing lead RLS policies.
+- Validation passed: formatting, lint, strict type-check, all 102 application tests, production build, clean local database rebuild, and all 121 pgTAP tests.
+- Authenticated desktop and phone browser review passed for the report, 24-hour and 30-day charts, search results, responsive table, and empty/error protections with no horizontal page overflow or framework error overlay.
+- Follow-up chart refinement replaced the horizontally scrolling 90-day bars with one responsive, softly filled trend line and five date anchors, keeping the full period visible at once while retaining a complete screen-reader data list.
+- Added a client-side Line / Bars view control and point inspection: pointer hover, touch, and keyboard focus now reveal the exact date bucket and quote-request count with a visible guide and marker, without implying that a request was a completed phone call.
+- Simplified the horizontal axis to sparse absolute dates or local times, aligned each label with its actual data point, and kept the complete aggregation range inside the hover, touch, and keyboard detail.
+- Tightened the lead-list header and filters, and promoted the stacked mobile lead row into a compact proportional table at tablet/desktop widths so each record uses the full card instead of leaving an empty right half.
+
 ## Milestone 11 — Square billing status
 
 Deliverables: hosted-checkout adapter, subscription records, signature-verified idempotent webhooks, normalized states, agency notifications, and manual suspension flow.

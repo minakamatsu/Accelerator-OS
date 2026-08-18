@@ -1,186 +1,227 @@
-import type { Metadata } from 'next'
-import type { Route } from 'next'
+import type { Metadata, Route } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getPipelineBusiness, listPipelineLeads } from '@/data/leads'
-import { leadStatusSchema, type LeadStatus } from '@/lib/leads/schemas'
-import styles from '@/components/leads/pipeline.module.css'
+import { getWebsiteLeadReport } from '@/data/leads'
+import {
+  analyticsRangeLabel,
+  analyticsRanges,
+  parseAnalyticsRange,
+} from '@/lib/analytics/dashboard'
+import { filterWebsiteLeadReportItems } from '@/lib/leads/report'
+import { LeadTrendChart } from './lead-trend-chart'
+import styles from './report.module.css'
 
-export const metadata: Metadata = { title: 'Website requests' }
+export const metadata: Metadata = { title: 'Website leads' }
 
 type Props = {
   params: Promise<{ businessId: string }>
-  searchParams: Promise<{ status?: string }>
+  searchParams: Promise<{
+    range?: string
+    query?: string
+    date?: string
+  }>
 }
 
-const statusLabels: Record<LeadStatus, string> = {
-  new: 'New',
-  contacted: 'Contacted',
-  estimate_sent: 'Estimate sent',
-  won: 'Won',
-  lost: 'Lost',
-}
-
-function money(value: number | null): string {
-  return value === null
-    ? 'Not recorded'
-    : new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        maximumFractionDigits: 0,
-      }).format(value / 100)
-}
-
-function submittedAt(value: string): string {
+function displayDate(value: string, timeZone: string): string {
   return new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
+    year: 'numeric',
     hour: 'numeric',
     minute: '2-digit',
+    timeZone,
   }).format(new Date(value))
 }
 
-export default async function LeadPipelinePage({
+function contactSummary(email: string | null, phone: string | null) {
+  if (email && phone) return `${email} · ${phone}`
+  return email ?? phone ?? 'No contact detail stored'
+}
+
+export default async function WebsiteLeadReportPage({
   params,
   searchParams,
 }: Props) {
   const [{ businessId }, query] = await Promise.all([params, searchParams])
-  const [business, leads] = await Promise.all([
-    getPipelineBusiness(businessId),
-    listPipelineLeads(businessId),
-  ])
-  if (!business) notFound()
+  const days = parseAnalyticsRange(query.range)
+  const report = await getWebsiteLeadReport(businessId, days)
+  if (!report) notFound()
 
-  const parsedStatus = leadStatusSchema.safeParse(query.status)
-  const selectedStatus = parsedStatus.success ? parsedStatus.data : null
-  const visibleLeads = selectedStatus
-    ? leads.filter((lead) => lead.status === selectedStatus)
-    : leads
-  const counts = Object.fromEntries(
-    Object.keys(statusLabels).map((status) => [
-      status,
-      leads.filter((lead) => lead.status === status).length,
-    ]),
-  ) as Record<LeadStatus, number>
-  const inProgressCount = counts.contacted + counts.estimate_sent
-
-  const basePath = `/portal/businesses/${business.id}/leads`
+  const searchQuery = query.query?.trim().slice(0, 120) ?? ''
+  const selectedDate = /^\d{4}-\d{2}-\d{2}$/.test(query.date ?? '')
+    ? query.date
+    : undefined
+  const visibleLeads = filterWebsiteLeadReportItems(report.leads, {
+    query: searchQuery,
+    date: selectedDate,
+    timeZone: report.business.timeZone,
+  })
+  const basePath = `/portal/businesses/${report.business.id}/leads`
+  const hasFilters = Boolean(searchQuery || selectedDate)
 
   return (
-    <div className={styles.workspace}>
-      <header className={styles.pipelineHero}>
+    <main className={styles.report}>
+      <header className={styles.header}>
         <div>
-          <Link href={`/portal/businesses/${business.id}` as Route}>
-            ← Dashboard
-          </Link>
-          <p>Website requests</p>
-          <h1>{business.name}</h1>
+          <p>Website leads</p>
+          <h1>Quote requests in one clear list.</h1>
           <span>
-            Estimate requests submitted through this business&apos;s website.
+            People who submitted the request form on {report.business.name}
+            &apos;s website. This records the inquiry—not a completed estimate
+            or booked job.
           </span>
         </div>
-        <dl aria-label="All-time request metrics">
-          <div>
-            <dt>Total requests</dt>
-            <dd>{leads.length}</dd>
-            <small>All website requests</small>
-          </div>
-          <div>
-            <dt>New requests</dt>
-            <dd>{counts.new}</dd>
-            <small>Not contacted yet</small>
-          </div>
-          <div>
-            <dt>In progress</dt>
-            <dd>{inProgressCount}</dd>
-            <small>Contacted or estimate sent</small>
-          </div>
-          <div>
-            <dt>Won</dt>
-            <dd>{counts.won}</dd>
-            <small>Marked as won</small>
-          </div>
-        </dl>
+        <Link
+          href={`/portal/businesses/${report.business.id}` as Route}
+          className={styles.dashboardLink}
+        >
+          Back to dashboard
+        </Link>
       </header>
 
-      <section className={styles.pipelineBody} aria-labelledby="pipeline-title">
-        <div className={styles.pipelineHeading}>
-          <div>
-            <p>Submitted details</p>
-            <h2 id="pipeline-title">Requests received</h2>
-          </div>
-          <span>{visibleLeads.length} shown</span>
+      <section className={styles.rangeRow} aria-label="Lead reporting period">
+        <div>
+          <p>Received in this period</p>
+          <strong>{report.leads.length}</strong>
+          <span>
+            {report.leads.length === 1 ? 'website lead' : 'website leads'}
+          </span>
         </div>
-
-        <nav className={styles.filters} aria-label="Filter requests by status">
-          <Link
-            href={basePath as Route}
-            scroll={false}
-            className={!selectedStatus ? styles.activeFilter : undefined}
-          >
-            All <span>{leads.length}</span>
-          </Link>
-          {(Object.keys(statusLabels) as LeadStatus[]).map((status) => (
+        <nav aria-label="Select lead date range">
+          {analyticsRanges.map((range) => (
             <Link
-              key={status}
-              href={`${basePath}?status=${status}` as Route}
+              key={range}
+              href={`${basePath}?range=${range}` as Route}
               scroll={false}
-              className={
-                selectedStatus === status ? styles.activeFilter : undefined
-              }
+              aria-current={days === range ? 'page' : undefined}
             >
-              {statusLabels[status]} <span>{counts[status]}</span>
+              {analyticsRangeLabel(range)}
             </Link>
           ))}
         </nav>
+      </section>
+
+      <section className={styles.trendCard} aria-labelledby="lead-trend-title">
+        <div className={styles.sectionHeading}>
+          <div>
+            <p>Leads over time</p>
+            <h2 id="lead-trend-title">Request volume</h2>
+          </div>
+          <span>All requests in the selected period</span>
+        </div>
+
+        {report.leads.length > 0 ? (
+          <LeadTrendChart trend={report.trend} />
+        ) : (
+          <div className={styles.chartEmpty}>
+            <strong>No quote requests in this period.</strong>
+            <p>New website form submissions will appear here automatically.</p>
+          </div>
+        )}
+      </section>
+
+      <section
+        id="lead-list"
+        className={styles.leadCard}
+        aria-labelledby="lead-list-title"
+      >
+        <div className={styles.sectionHeading}>
+          <div>
+            <p>Lead list</p>
+            <h2 id="lead-list-title">Submitted requests</h2>
+          </div>
+          <span aria-live="polite">
+            {visibleLeads.length} {visibleLeads.length === 1 ? 'row' : 'rows'}
+          </span>
+        </div>
+
+        <form
+          className={styles.filters}
+          method="get"
+          action={`${basePath}#lead-list`}
+        >
+          <input type="hidden" name="range" value={days} />
+          <label>
+            <span>Search leads</span>
+            <input
+              type="search"
+              name="query"
+              defaultValue={searchQuery}
+              maxLength={120}
+              placeholder="Name, phone, email, vehicle, or request"
+            />
+          </label>
+          <label>
+            <span>Submitted on</span>
+            <input type="date" name="date" defaultValue={selectedDate} />
+          </label>
+          <button type="submit">Search</button>
+          {hasFilters ? (
+            <Link href={`${basePath}?range=${days}` as Route} scroll={false}>
+              Clear filters
+            </Link>
+          ) : null}
+        </form>
 
         {visibleLeads.length > 0 ? (
-          <ol className={styles.leadList}>
-            {visibleLeads.map((lead) => (
-              <li key={lead.id}>
-                <Link href={`${basePath}/${lead.id}` as Route}>
-                  <div className={styles.leadIdentity}>
-                    <span className={styles[`status_${lead.status}`]}>
-                      {statusLabels[lead.status]}
-                    </span>
-                    <h3>{lead.fullName}</h3>
-                    <p>
-                      {lead.serviceRequest ?? 'No request summary supplied.'}
-                    </p>
-                  </div>
-                  <dl>
-                    <div>
-                      <dt>Vehicle</dt>
-                      <dd>{lead.vehicleLabel ?? 'Not supplied'}</dd>
-                    </div>
-                    <div>
-                      <dt>Submitted</dt>
-                      <dd>{submittedAt(lead.createdAt)}</dd>
-                    </div>
-                    <div>
-                      <dt>Estimate</dt>
-                      <dd>{money(lead.estimatedValueMinor)}</dd>
-                    </div>
-                  </dl>
-                  <span className={styles.openLead}>Open request →</span>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <div className={styles.tableScroll}>
+            <table>
+              <caption>
+                Website quote requests for {report.business.name}
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Submitted</th>
+                  <th scope="col">Customer</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Vehicle</th>
+                  <th scope="col">Request</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visibleLeads.map((lead) => (
+                  <tr key={lead.id}>
+                    <td data-label="Submitted">
+                      {displayDate(lead.createdAt, report.business.timeZone)}
+                    </td>
+                    <td data-label="Customer">
+                      <strong>{lead.fullName}</strong>
+                    </td>
+                    <td data-label="Contact">
+                      {contactSummary(lead.email, lead.phone)}
+                    </td>
+                    <td data-label="Vehicle">
+                      {lead.vehicleLabel ?? 'Not supplied'}
+                    </td>
+                    <td data-label="Request">
+                      <strong>{lead.serviceRequest}</strong>
+                      {lead.message ? <small>{lead.message}</small> : null}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
-          <div className={styles.pipelineEmpty}>
-            <span>0</span>
-            <h3>No requests in this view.</h3>
+          <div className={styles.tableEmpty}>
+            <strong>
+              {hasFilters
+                ? 'No leads match these filters.'
+                : 'No website leads in this period.'}
+            </strong>
             <p>
-              New website requests will appear here. Try another status filter
-              if requests have already been received.
+              {hasFilters
+                ? 'Try a different name, contact detail, vehicle, request, or date.'
+                : 'Accepted quote-request forms will be listed here.'}
             </p>
-            {selectedStatus ? (
-              <Link href={basePath as Route}>Show all requests</Link>
+            {hasFilters ? (
+              <Link href={`${basePath}?range=${days}` as Route} scroll={false}>
+                Show every lead in this period
+              </Link>
             ) : null}
           </div>
         )}
       </section>
-    </div>
+    </main>
   )
 }

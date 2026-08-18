@@ -22,9 +22,10 @@ describe('platform navigation', () => {
     )
     expect(navigation.navigation.map((item) => item.label)).toEqual([
       'Dashboard',
+      'Website leads',
       'View website',
     ])
-    expect(navigation.navigation.map((item) => item.href)).not.toContain(
+    expect(navigation.navigation.map((item) => item.href)).toContain(
       '/portal/businesses/11111111-1111-4111-8111-111111111111/leads',
     )
     expect(navigation.navigation.map((item) => item.href)).not.toContain(

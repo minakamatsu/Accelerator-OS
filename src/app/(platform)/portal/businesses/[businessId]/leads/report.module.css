@@ -1,0 +1,666 @@
+.report {
+  width: min(100%, 76rem);
+  margin-inline: auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.header p,
+.rangeRow p,
+.sectionHeading > div > p {
+  margin: 0;
+  color: var(--brand-bright);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  max-width: 16ch;
+  margin: 0.45rem 0 0;
+  font-size: clamp(2rem, 8vw, 3.55rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.header > div > span {
+  display: block;
+  max-width: 44rem;
+  margin-top: 0.8rem;
+  color: var(--ink-muted);
+  line-height: 1.65;
+}
+
+.dashboardLink {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: var(--paper-strong);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+}
+
+.rangeRow {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.rangeRow > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem 0.5rem;
+  align-items: baseline;
+}
+
+.rangeRow p {
+  grid-column: 1 / -1;
+}
+
+.rangeRow strong {
+  margin-top: 0.25rem;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.rangeRow span {
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.rangeRow nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+  padding: 0.4rem;
+  background: var(--paper-strong);
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+}
+
+.rangeRow nav a {
+  min-height: 2.75rem;
+  display: grid;
+  place-items: center;
+  padding: 0.4rem;
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: var(--control);
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+}
+
+.rangeRow nav a:hover {
+  border-color: var(--brand);
+  background: var(--control-hover);
+}
+
+.rangeRow nav a[aria-current='page'] {
+  color: var(--nav-active-text);
+  background: var(--nav-active);
+  border-color: var(--nav-active);
+}
+
+.trendCard,
+.leadCard {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--paper-strong);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+
+.leadCard .sectionHeading {
+  padding-block: 0.9rem;
+}
+
+.sectionHeading {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.sectionHeading h2 {
+  margin: 0.35rem 0 0;
+  font-size: 1.3rem;
+  letter-spacing: -0.025em;
+}
+
+.sectionHeading > span {
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.chart {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 1rem 1.2rem 0.9rem;
+}
+
+.chartToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding-bottom: 0.75rem;
+}
+
+.chartToolbar > span {
+  color: var(--ink-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.chartToolbar > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.2rem;
+  padding: 0.2rem;
+  background: var(--control);
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+}
+
+.chartToolbar button {
+  min-width: 3.7rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.65rem;
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 850;
+  background: transparent;
+  border: 0;
+  border-radius: 0.45rem;
+  cursor: pointer;
+}
+
+.chartToolbar button[aria-pressed='true'] {
+  color: var(--nav-active-text);
+  background: var(--nav-active);
+}
+
+.chartCanvas {
+  position: relative;
+  height: clamp(12rem, 24vw, 16rem);
+  min-height: 0;
+  overflow: hidden;
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--ink) 7%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 100% 25%;
+  border-bottom: 1px solid var(--line);
+}
+
+.chartCanvas::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--ink) 4%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 25% 100%;
+}
+
+.chartPlot {
+  position: absolute;
+  z-index: 1;
+  inset: 0.75rem 0 0 1.75rem;
+}
+
+.chartPlot svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.chartArea {
+  fill: url('#lead-chart-fill');
+}
+
+.chartLine {
+  fill: none;
+  stroke: var(--brand);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.chartBars {
+  fill: var(--brand);
+}
+
+.chartGuide {
+  stroke: var(--ink-muted);
+  stroke-dasharray: 4 5;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.chartMarker {
+  position: absolute;
+  z-index: 2;
+  top: var(--marker-top);
+  left: var(--marker-left);
+  width: 0.72rem;
+  height: 0.72rem;
+  background: var(--paper-strong);
+  border: 0.16rem solid var(--brand);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.chartTargets {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+}
+
+.chartTargets button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--target-left);
+  width: var(--target-width);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: crosshair;
+  outline: none;
+}
+
+.chartTargets button:focus-visible {
+  outline: none;
+}
+
+.chartTooltip {
+  --tooltip-shift-x: -50%;
+  --tooltip-shift-y: calc(-100% - 0.7rem);
+
+  position: absolute;
+  z-index: 4;
+  top: var(--tooltip-top);
+  left: var(--tooltip-left);
+  display: grid;
+  gap: 0.2rem;
+  width: max-content;
+  max-width: min(13rem, 80vw);
+  padding: 0.65rem 0.75rem;
+  color: var(--ink);
+  background: var(--paper-strong);
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  box-shadow: var(--shadow-soft);
+  pointer-events: none;
+  transform: translate(var(--tooltip-shift-x), var(--tooltip-shift-y));
+}
+
+.chartTooltip span {
+  color: var(--ink-muted);
+  font-size: 0.64rem;
+  font-weight: 750;
+}
+
+.chartTooltip strong {
+  font-size: 0.75rem;
+}
+
+.chartTooltipStart {
+  --tooltip-shift-x: 0%;
+}
+
+.chartTooltipEnd {
+  --tooltip-shift-x: -100%;
+}
+
+.chartTooltipBelow {
+  --tooltip-shift-y: 0.7rem;
+}
+
+.chartMaximum,
+.chartZero {
+  position: absolute;
+  z-index: 2;
+  left: 0.4rem;
+  padding: 0.1rem 0.3rem;
+  color: var(--ink-muted);
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1;
+  background: var(--paper-strong);
+  border-radius: 0.25rem;
+}
+
+.chartMaximum {
+  top: 0.35rem;
+}
+
+.chartZero {
+  bottom: 0.35rem;
+}
+
+.chartAxis {
+  display: grid;
+  grid-template-columns: repeat(var(--axis-columns), minmax(0, 1fr));
+  gap: 0.35rem;
+  padding: 0.65rem 0 0 1.75rem;
+  color: var(--ink-muted);
+  font-size: 0.61rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.chartAxis span:first-child {
+  text-align: left;
+}
+
+.chartAxis span:last-child {
+  text-align: right;
+}
+
+.chartData {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.chartEmpty,
+.tableEmpty {
+  padding: 2rem 1.2rem;
+}
+
+.chartEmpty p,
+.tableEmpty p {
+  max-width: 38rem;
+  margin: 0.5rem 0 0;
+  color: var(--ink-muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.tableEmpty a {
+  display: inline-block;
+  margin-top: 0.85rem;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.filters {
+  display: grid;
+  gap: 0.8rem;
+  padding: 0.9rem 1.2rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.filters label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.filters label > span {
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.filters input {
+  width: 100%;
+  min-height: 2.85rem;
+  padding: 0.65rem 0.8rem;
+  color: var(--ink);
+  font: inherit;
+  background: var(--control);
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+}
+
+.filters button {
+  min-height: 2.85rem;
+  padding: 0.65rem 1rem;
+  color: var(--action-text);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  background: var(--action);
+  border: 1px solid var(--action);
+  border-radius: 0.65rem;
+  cursor: pointer;
+}
+
+.filters > a {
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.tableScroll table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableScroll caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.tableScroll thead {
+  display: none;
+}
+
+.tableScroll tbody,
+.tableScroll tr,
+.tableScroll td {
+  display: block;
+}
+
+.tableScroll tr {
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.tableScroll tr:last-child {
+  border-bottom: 0;
+}
+
+.tableScroll td {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 0.35fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+  overflow-wrap: anywhere;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.tableScroll td::before {
+  content: attr(data-label);
+  color: var(--ink-muted);
+  font-size: 0.67rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tableScroll td > strong {
+  color: var(--ink);
+}
+
+.tableScroll td small {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 42rem) {
+  .rangeRow {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .rangeRow nav {
+    width: 27rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sectionHeading {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+
+  .filters {
+    grid-template-columns: minmax(15rem, 1fr) minmax(10rem, 0.45fr) auto auto;
+    align-items: end;
+  }
+
+  .filters > a {
+    padding-inline: 0.35rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .tableScroll {
+    overflow-x: visible;
+  }
+
+  .tableScroll table {
+    table-layout: fixed;
+  }
+
+  .tableScroll thead {
+    display: table-header-group;
+  }
+
+  .tableScroll tbody {
+    display: table-row-group;
+  }
+
+  .tableScroll tr {
+    display: table-row;
+    padding: 0;
+  }
+
+  .tableScroll th,
+  .tableScroll td {
+    padding: 0.72rem 0.85rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tableScroll th {
+    color: var(--ink-muted);
+    font-size: 0.64rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--paper);
+  }
+
+  .tableScroll td {
+    display: table-cell;
+    color: var(--ink-muted);
+    font-size: 0.74rem;
+  }
+
+  .tableScroll td::before {
+    display: none;
+  }
+
+  .tableScroll th:nth-child(1) {
+    width: 18%;
+  }
+
+  .tableScroll th:nth-child(2) {
+    width: 16%;
+  }
+
+  .tableScroll th:nth-child(3) {
+    width: 22%;
+  }
+
+  .tableScroll th:nth-child(4) {
+    width: 17%;
+  }
+
+  .tableScroll th:nth-child(5) {
+    width: 27%;
+  }
+}
+
+@media (min-width: 60rem) {
+  .header {
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+  }
+
+  .sectionHeading,
+  .filters {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rangeRow nav a {
+    scroll-behavior: auto;
+  }
+}

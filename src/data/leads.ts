@@ -2,6 +2,13 @@ import 'server-only'
 import { z } from 'zod'
 import { requireAuthenticatedUser } from '@/lib/auth/guards'
 import type { PublicLeadInput } from '@/lib/leads/schemas'
+import {
+  buildWebsiteLeadTrend,
+  websiteLeadRangeStart,
+  type WebsiteLeadReportItem,
+  type WebsiteLeadTrendPoint,
+} from '@/lib/leads/report'
+import type { AnalyticsRange } from '@/lib/analytics/dashboard'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 
@@ -115,7 +122,8 @@ export async function listPipelineLeads(
       fullName: lead.full_name,
       email: lead.email,
       phone: lead.phone,
-      serviceRequest: lead.service_request,
+      serviceRequest:
+        lead.service_request ?? 'No request description supplied.',
       vehicleLabel: vehicleLabel || null,
       source: lead.source,
       estimatedValueMinor: lead.estimated_value_minor,
@@ -123,6 +131,86 @@ export async function listPipelineLeads(
       createdAt: lead.created_at,
     }
   })
+}
+
+export type WebsiteLeadReport = {
+  business: {
+    id: string
+    name: string
+    timeZone: string
+  }
+  leads: WebsiteLeadReportItem[]
+  trend: WebsiteLeadTrendPoint[]
+}
+
+export async function getWebsiteLeadReport(
+  businessId: string,
+  days: AnalyticsRange,
+): Promise<WebsiteLeadReport | null> {
+  await requireAuthenticatedUser()
+  const supabase = await createClient()
+  const now = new Date()
+  const from = websiteLeadRangeStart(days, now)
+
+  const [businessResult, leadsResult] = await Promise.all([
+    supabase
+      .from('businesses')
+      .select('id, name, timezone')
+      .eq('id', businessId)
+      .maybeSingle(),
+    supabase
+      .from('leads')
+      .select(
+        'id, full_name, email, phone, service_request, message, vehicle_year, vehicle_make, vehicle_model, created_at',
+      )
+      .eq('business_id', businessId)
+      .gte('created_at', from)
+      .lte('created_at', now.toISOString())
+      .order('created_at', { ascending: false }),
+  ])
+
+  if (businessResult.error) {
+    throw new Error('Unable to load the client business.')
+  }
+  if (!businessResult.data) return null
+  if (leadsResult.error) throw new Error('Unable to load website leads.')
+
+  const leads = leadsResult.data.map((lead) => {
+    const vehicleLabel = [
+      lead.vehicle_year?.toString(),
+      lead.vehicle_make,
+      lead.vehicle_model,
+    ]
+      .filter(Boolean)
+      .join(' ')
+
+    return {
+      id: lead.id,
+      fullName: lead.full_name,
+      email: lead.email,
+      phone: lead.phone,
+      serviceRequest:
+        lead.service_request ?? 'No request description supplied.',
+      message: lead.message,
+      vehicleLabel: vehicleLabel || null,
+      createdAt: lead.created_at,
+    }
+  })
+
+  return {
+    business: {
+      id: businessResult.data.id,
+      name: businessResult.data.name,
+      timeZone: businessResult.data.timezone,
+    },
+    leads,
+    trend: buildWebsiteLeadTrend(
+      leads,
+      days,
+      now,
+      businessResult.data.timezone,
+    ),
+  }
 }
 
 export type LeadDetail = PipelineLead & {
