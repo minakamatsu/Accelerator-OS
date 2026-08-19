@@ -443,6 +443,8 @@ Completion record:
 - Added a client-side Line / Bars view control and point inspection: pointer hover, touch, and keyboard focus now reveal the exact date bucket and quote-request count with a visible guide and marker, without implying that a request was a completed phone call.
 - Simplified the horizontal axis to sparse absolute dates or local times, aligned each label with its actual data point, and kept the complete aggregation range inside the hover, touch, and keyboard detail.
 - Tightened the lead-list header and filters, and promoted the stacked mobile lead row into a compact proportional table at tablet/desktop widths so each record uses the full card instead of leaving an empty right half.
+- Corrected the shared dashboard metric explanation surface so its semantic foreground/background pair remains readable when either a client member or an agency administrator opens the same analytics route, with a regression check against the previous `--ink` plus hard-coded-white combination.
+- Added one in-place, scroll-preserving analytics refresh control to the shared business dashboard so agency administrators and client members can request current numbers without automatic polling or duplicated database traffic.
 
 ## Milestone 11 — Square billing status
 

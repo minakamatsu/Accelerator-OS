@@ -35,10 +35,26 @@ describe('client dashboard responsive layout', () => {
     expect(page).toContain('title="Top pages"')
     expect(page).toContain('title="Traffic sources"')
     expect(page).toContain('title="How visitors viewed the site"')
+    expect(page).toContain('<RefreshDataButton />')
     expect(page).not.toContain('/leads')
     expect(page).not.toContain('View website requests')
     expect(page).not.toContain('Core Web Vitals')
     expect(page).not.toContain('Website health')
+  })
+
+  it('refreshes shared agency and client analytics in place', () => {
+    const control = readFileSync(
+      resolve(
+        process.cwd(),
+        'src/app/(platform)/portal/businesses/[businessId]/refresh-data-button.tsx',
+      ),
+      'utf8',
+    )
+
+    expect(control).toContain('router.refresh()')
+    expect(control).toContain('useTransition()')
+    expect(control).toContain("'Refreshing…'")
+    expect(control).not.toContain('window.location')
   })
 
   it('keeps range controls readable in both client and agency themes', () => {
@@ -53,5 +69,24 @@ describe('client dashboard responsive layout', () => {
     expect(styles).toContain('background: var(--control)')
     expect(styles).toContain('background: var(--nav-active)')
     expect(styles).toContain('color: var(--nav-active-text)')
+  })
+
+  it('keeps metric explanations on matching semantic surfaces in every theme', () => {
+    const styles = readFileSync(
+      resolve(
+        process.cwd(),
+        'src/app/(platform)/portal/businesses/[businessId]/dashboard.module.css',
+      ),
+      'utf8',
+    )
+    const explanation = styles.match(
+      /\.metricLabel details p\s*\{([\s\S]*?)\n\}/,
+    )?.[1]
+
+    expect(explanation).toBeDefined()
+    expect(explanation).toContain('background: var(--control)')
+    expect(explanation).toContain('color: var(--ink)')
+    expect(explanation).not.toContain('background: var(--ink)')
+    expect(explanation).not.toMatch(/color:\s*(?:white|#fff(?:fff)?)/i)
   })
 })

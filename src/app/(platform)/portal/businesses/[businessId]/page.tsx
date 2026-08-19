@@ -10,6 +10,7 @@ import {
   type AnalyticsRange,
   type AnalyticsBreakdown,
 } from '@/lib/analytics/dashboard'
+import { RefreshDataButton } from './refresh-data-button'
 import styles from './dashboard.module.css'
 
 export const metadata: Metadata = { title: 'Website performance' }
@@ -196,17 +197,20 @@ export default async function ClientBusinessDashboard({
             they took.
           </span>
         </div>
-        <a
-          href={
-            business.websiteUrl ??
-            `/portal/businesses/${business.id}/website-preview`
-          }
-          target={business.websiteUrl ? '_blank' : undefined}
-          rel={business.websiteUrl ? 'noreferrer' : undefined}
-          className={styles.websiteButton}
-        >
-          {business.websiteUrl ? 'Open website ↗' : 'View website'}
-        </a>
+        <div className={styles.headerActions}>
+          <RefreshDataButton />
+          <a
+            href={
+              business.websiteUrl ??
+              `/portal/businesses/${business.id}/website-preview`
+            }
+            target={business.websiteUrl ? '_blank' : undefined}
+            rel={business.websiteUrl ? 'noreferrer' : undefined}
+            className={styles.websiteButton}
+          >
+            {business.websiteUrl ? 'Open website ↗' : 'View website'}
+          </a>
+        </div>
       </header>
 
       <section className={styles.rangeRow} aria-label="Performance date range">

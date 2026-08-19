@@ -41,7 +41,15 @@
   line-height: 1.65;
 }
 
-.websiteButton {
+.headerActions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.websiteButton,
+.refreshButton {
   min-height: 2.75rem;
   display: inline-flex;
   align-items: center;
@@ -54,6 +62,43 @@
   font-size: 0.88rem;
   font-weight: 800;
   text-decoration: none;
+}
+
+.refreshButton {
+  gap: 0.45rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.refreshButton:hover:not(:disabled),
+.websiteButton:hover {
+  border-color: var(--brand);
+  background: var(--control-hover);
+}
+
+.refreshButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.refreshButton svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.refreshButton svg[data-refreshing='true'] {
+  animation: refresh-spin 700ms linear infinite;
+}
+
+@keyframes refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .rangeRow {
@@ -171,9 +216,9 @@
   margin: 0;
   border: 1px solid var(--line);
   border-radius: 0.7rem;
-  background: var(--ink);
+  background: var(--control);
   padding: 0.75rem;
-  color: white;
+  color: var(--ink);
   font-size: 0.76rem;
   font-weight: 500;
   line-height: 1.5;
@@ -534,6 +579,10 @@
     justify-content: space-between;
     padding-bottom: 2rem;
   }
+  .headerActions {
+    width: auto;
+    display: flex;
+  }
   .metrics {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -565,5 +614,11 @@
   }
   .insightGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .refreshButton svg[data-refreshing='true'] {
+    animation: none;
   }
 }
