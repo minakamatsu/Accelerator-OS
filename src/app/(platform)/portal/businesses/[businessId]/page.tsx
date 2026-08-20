@@ -10,6 +10,7 @@ import {
   type AnalyticsRange,
   type AnalyticsBreakdown,
 } from '@/lib/analytics/dashboard'
+import { ActivityTrendChart } from './activity-trend-chart'
 import { RefreshDataButton } from './refresh-data-button'
 import styles from './dashboard.module.css'
 
@@ -20,7 +21,6 @@ type Props = {
   searchParams: Promise<{ range?: string }>
 }
 
-type BarStyle = CSSProperties & { '--bar-height': string }
 type ProgressStyle = CSSProperties & { '--progress': string }
 
 const metricDefinitions = {
@@ -43,10 +43,6 @@ function periodLabel(range: AnalyticsRange, start: string, end: Date): string {
     timeZone: 'UTC',
   })
   return `${format.format(new Date(start))}–${format.format(end)}`
-}
-
-function countLabel(value: number, singular: string, plural = `${singular}s`) {
-  return `${value} ${value === 1 ? singular : plural}`
 }
 
 function comparisonLabel(
@@ -154,14 +150,6 @@ export default async function ClientBusinessDashboard({
   if (!dashboard) notFound()
 
   const { business, metrics } = dashboard
-  const maxTrendValue = Math.max(
-    1,
-    ...metrics.trend.flatMap((point) => [
-      point.pageViews,
-      point.uniqueVisitors,
-      point.highIntentActions,
-    ]),
-  )
   const basePath = `/portal/businesses/${business.id}`
   const actionRows = [
     {
@@ -267,6 +255,37 @@ export default async function ClientBusinessDashboard({
         />
       </section>
 
+      <section className={styles.trendCard} aria-labelledby="activity-title">
+        <div className={styles.sectionHeading}>
+          <div>
+            <p>Activity over time</p>
+            <h2 id="activity-title">Website activity trend</h2>
+          </div>
+          <span className={styles.chartHint}>
+            Choose a metric, then hover or focus a point for details.
+          </span>
+        </div>
+
+        {metrics.pageViews + metrics.highIntentActions > 0 ? (
+          <ActivityTrendChart
+            trend={metrics.trend}
+            totals={{
+              pageViews: metrics.pageViews,
+              uniqueVisitors: metrics.uniqueVisitors,
+              highIntentActions: metrics.highIntentActions,
+            }}
+          />
+        ) : (
+          <div className={styles.noActivity}>
+            <strong>No website activity recorded for this period.</strong>
+            <p>
+              Visitors, page views, estimate requests, and tracked button
+              presses will appear here as people use the public website.
+            </p>
+          </div>
+        )}
+      </section>
+
       <section className={styles.actionsCard} aria-labelledby="actions-title">
         <div className={styles.actionsIntro}>
           <div>
@@ -291,74 +310,6 @@ export default async function ClientBusinessDashboard({
             </article>
           ))}
         </div>
-      </section>
-
-      <section className={styles.trendCard} aria-labelledby="activity-title">
-        <div className={styles.sectionHeading}>
-          <div>
-            <p>Activity over time</p>
-            <h2 id="activity-title">Website activity trend</h2>
-          </div>
-          <div className={styles.legend} aria-label="Chart legend">
-            <span>
-              <i className={styles.viewsKey} /> Page views
-            </span>
-            <span>
-              <i className={styles.visitorsKey} /> Visitors
-            </span>
-            <span>
-              <i className={styles.actionsKey} /> Actions
-            </span>
-          </div>
-        </div>
-
-        {metrics.pageViews + metrics.highIntentActions > 0 ? (
-          <div className={styles.chart}>
-            {metrics.trend.map((point) => (
-              <div
-                key={point.label}
-                className={styles.chartGroup}
-                aria-label={`${point.label}: ${countLabel(point.pageViews, 'page view')}, ${countLabel(point.uniqueVisitors, 'visitor')}, ${countLabel(point.highIntentActions, 'action')}`}
-              >
-                <div className={styles.bars} aria-hidden="true">
-                  <i
-                    className={styles.viewBar}
-                    style={
-                      {
-                        '--bar-height': `${(point.pageViews / maxTrendValue) * 100}%`,
-                      } as BarStyle
-                    }
-                  />
-                  <i
-                    className={styles.visitorBar}
-                    style={
-                      {
-                        '--bar-height': `${(point.uniqueVisitors / maxTrendValue) * 100}%`,
-                      } as BarStyle
-                    }
-                  />
-                  <i
-                    className={styles.actionBar}
-                    style={
-                      {
-                        '--bar-height': `${(point.highIntentActions / maxTrendValue) * 100}%`,
-                      } as BarStyle
-                    }
-                  />
-                </div>
-                <span>{point.label}</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className={styles.noActivity}>
-            <strong>No website activity recorded for this period.</strong>
-            <p>
-              Visitors, page views, estimate requests, and tracked button
-              presses will appear here as people use the public website.
-            </p>
-          </div>
-        )}
       </section>
 
       <section className={styles.insightGrid} aria-label="Visitor insights">

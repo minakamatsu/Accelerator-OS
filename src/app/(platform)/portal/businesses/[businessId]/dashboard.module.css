@@ -258,38 +258,12 @@
   letter-spacing: -0.025em;
 }
 
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem 1rem;
+.chartHint {
+  max-width: 23rem;
   color: var(--ink-muted);
   font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.legend i {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 0.15rem;
-}
-
-.viewsKey,
-.viewBar {
-  background: var(--brand) !important;
-}
-.visitorsKey,
-.visitorBar {
-  background: var(--signal) !important;
-}
-.actionsKey,
-.actionBar {
-  background: #8aa19a !important;
+  font-weight: 650;
+  line-height: 1.45;
 }
 
 .actionsCard {
@@ -485,50 +459,283 @@
   line-height: 1.55;
 }
 
-.chart {
-  min-height: 17rem;
+.activityChart {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.activityMetrics {
   display: grid;
-  grid-auto-columns: minmax(3.25rem, 1fr);
-  grid-auto-flow: column;
-  align-items: end;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding: 1.5rem 1.2rem 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line);
+}
+
+.activityMetrics button {
+  position: relative;
+  min-width: 0;
+  min-height: 5.25rem;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 0.4rem;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  padding: 0.9rem 1rem;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.activityMetrics button:last-child {
+  border-right: 0;
+}
+
+.activityMetrics button::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: transparent;
+  content: '';
+}
+
+.activityMetrics button:hover {
+  background: var(--control-hover);
+}
+
+.activityMetrics button[aria-pressed='true'] {
+  background: var(--control);
+}
+
+.activityMetrics button[aria-pressed='true']::after {
+  background: var(--brand);
+}
+
+.activityMetrics span {
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.activityMetrics strong {
+  font-size: clamp(1.45rem, 7vw, 2rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.activityCanvas {
+  position: relative;
+  height: clamp(14rem, 30vw, 20rem);
+  min-height: 0;
+  overflow: hidden;
   background-image: linear-gradient(
     to top,
-    rgb(16 35 31 / 0.055) 1px,
+    color-mix(in srgb, var(--ink) 8%, transparent) 1px,
     transparent 1px
   );
   background-size: 100% 25%;
 }
 
-.chartGroup {
-  height: 14rem;
+.activityCanvas::after {
+  position: absolute;
+  inset: 0 0 0 2.6rem;
+  content: '';
+  pointer-events: none;
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--ink) 4%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 25% 100%;
+}
+
+.activityScale {
+  position: absolute;
+  z-index: 2;
+  inset: 0.65rem auto 0.35rem 0;
+  width: 2.45rem;
   display: grid;
-  grid-template-rows: 1fr auto;
-  gap: 0.65rem;
-}
-
-.bars {
-  min-height: 0;
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  gap: 0.18rem;
-}
-
-.bars i {
-  width: min(0.62rem, 25%);
-  height: var(--bar-height);
-  border-radius: 0.2rem 0.2rem 0 0;
-}
-
-.chartGroup > span {
+  grid-template-rows: repeat(5, 1fr);
+  align-items: start;
+  justify-items: end;
   color: var(--ink-muted);
-  font-size: 0.62rem;
+  font-size: 0.61rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.activityScale span:last-child {
+  align-self: end;
+}
+
+.activityPlot {
+  position: absolute;
+  z-index: 1;
+  inset: 0.65rem 0 0.35rem 2.6rem;
+}
+
+.activityPlot svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.activityArea {
+  fill: url('#activity-chart-fill');
+}
+
+.activityLine {
+  fill: none;
+  stroke: var(--brand);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.activityGuide {
+  stroke: var(--ink-muted);
+  stroke-dasharray: 4 5;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.activityMarker {
+  position: absolute;
+  z-index: 3;
+  top: var(--marker-top);
+  left: var(--marker-left);
+  width: 0.78rem;
+  height: 0.78rem;
+  border: 0.18rem solid var(--brand);
+  border-radius: 50%;
+  background: var(--paper-strong);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.activityTargets {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+}
+
+.activityTargets button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--target-left);
+  width: var(--target-width);
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  cursor: crosshair;
+}
+
+.activityTargets button:focus-visible {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--brand) 32%, transparent);
+}
+
+.activityTooltip {
+  --tooltip-shift-x: -50%;
+  --tooltip-shift-y: calc(-100% - 0.75rem);
+
+  position: absolute;
+  z-index: 5;
+  top: var(--tooltip-top);
+  left: var(--tooltip-left);
+  width: max-content;
+  max-width: min(14rem, 72vw);
+  display: grid;
+  gap: 0.22rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  background: var(--paper-strong);
+  padding: 0.62rem 0.72rem;
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+  pointer-events: none;
+  transform: translate(var(--tooltip-shift-x), var(--tooltip-shift-y));
+}
+
+.activityTooltip span {
+  color: var(--ink-muted);
+  font-size: 0.64rem;
+  font-weight: 750;
+}
+
+.activityTooltip strong {
+  font-size: 0.76rem;
+}
+
+.activityTooltipStart {
+  --tooltip-shift-x: 0%;
+}
+
+.activityTooltipEnd {
+  --tooltip-shift-x: -100%;
+}
+
+.activityTooltipBelow {
+  --tooltip-shift-y: 0.75rem;
+}
+
+.activityAxis {
+  display: grid;
+  grid-template-columns: repeat(var(--axis-columns), minmax(0, 1fr));
+  gap: 0.3rem;
+  border-top: 1px solid var(--line);
+  padding: 0.7rem 0.85rem 0.8rem 2.6rem;
+  color: var(--ink-muted);
+  font-size: 0.6rem;
   font-weight: 700;
-  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
   text-align: center;
+  white-space: nowrap;
+}
+
+.activityAxis span {
+  min-width: max-content;
+  justify-self: center;
+}
+
+.activityAxis span:nth-child(even) {
+  display: none;
+}
+
+.activityAxis span:first-child {
+  justify-self: start;
+  text-align: left;
+}
+
+.activityAxis span:last-child {
+  justify-self: end;
+  text-align: right;
+}
+
+.activityData {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .noActivity {
@@ -567,6 +774,9 @@
   .insightGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .activityAxis span:nth-child(even) {
+    display: block;
+  }
 }
 
 @media (min-width: 64rem) {
@@ -593,9 +803,6 @@
     grid-template-columns: 1fr auto;
     align-items: end;
     padding: 1.5rem;
-  }
-  .chart {
-    padding-inline: 1.5rem;
   }
   .actionsIntro {
     padding: 1.5rem;

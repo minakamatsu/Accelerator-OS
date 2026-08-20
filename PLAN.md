@@ -445,6 +445,7 @@ Completion record:
 - Tightened the lead-list header and filters, and promoted the stacked mobile lead row into a compact proportional table at tablet/desktop widths so each record uses the full card instead of leaving an empty right half.
 - Corrected the shared dashboard metric explanation surface so its semantic foreground/background pair remains readable when either a client member or an agency administrator opens the same analytics route, with a regression check against the previous `--ink` plus hard-coded-white combination.
 - Added one in-place, scroll-preserving analytics refresh control to the shared business dashboard so agency administrators and client members can request current numbers without automatic polling or duplicated database traffic.
+- Replaced the shared dashboard's dense three-series bar strip with a compact selectable line chart for page views, visitors, and actions, including restrained grid/area treatment plus exact hover, touch, and keyboard point inspection in both agency and client themes.
 
 ## Milestone 11 — Square billing status
 

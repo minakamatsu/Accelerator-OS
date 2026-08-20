@@ -13,10 +13,11 @@ describe('client dashboard responsive layout', () => {
     )
 
     expect(styles).toContain('.metrics {')
+    expect(styles).toContain('.activityCanvas {')
     expect(styles).toContain('@media (min-width: 36rem)')
     expect(styles).toContain('@media (min-width: 64rem)')
     expect(styles).not.toContain('@media (max-width:')
-    expect(styles).toContain('overflow-x: auto')
+    expect(styles).not.toContain('overflow-x: auto')
   })
 
   it('keeps business analytics visible without linking to a request workspace or developer health data', () => {
@@ -35,11 +36,34 @@ describe('client dashboard responsive layout', () => {
     expect(page).toContain('title="Top pages"')
     expect(page).toContain('title="Traffic sources"')
     expect(page).toContain('title="How visitors viewed the site"')
+    expect(page).toContain('<ActivityTrendChart')
     expect(page).toContain('<RefreshDataButton />')
     expect(page).not.toContain('/leads')
     expect(page).not.toContain('View website requests')
     expect(page).not.toContain('Core Web Vitals')
     expect(page).not.toContain('Website health')
+  })
+
+  it('presents one selectable line metric with exact pointer, touch, and keyboard details', () => {
+    const chart = readFileSync(
+      resolve(
+        process.cwd(),
+        'src/app/(platform)/portal/businesses/[businessId]/activity-trend-chart.tsx',
+      ),
+      'utf8',
+    )
+
+    expect(chart).toContain('Choose activity chart metric')
+    expect(chart).toContain("useState<MetricKey>('pageViews')")
+    expect(chart).toContain("key: 'pageViews'")
+    expect(chart).toContain("key: 'uniqueVisitors'")
+    expect(chart).toContain("key: 'highIntentActions'")
+    expect(chart).toContain('aria-pressed={metricKey === definition.key}')
+    expect(chart).toContain('className={styles.activityLine}')
+    expect(chart).toContain('className={styles.activityMarker}')
+    expect(chart).toContain('onPointerEnter={() => setActiveIndex(index)}')
+    expect(chart).toContain('onFocus={() => setActiveIndex(index)}')
+    expect(chart).toContain('<output')
   })
 
   it('refreshes shared agency and client analytics in place', () => {
