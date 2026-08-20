@@ -447,6 +447,26 @@ Completion record:
 - Added one in-place, scroll-preserving analytics refresh control to the shared business dashboard so agency administrators and client members can request current numbers without automatic polling or duplicated database traffic.
 - Replaced the shared dashboard's dense three-series bar strip with a compact selectable line chart for page views, visitors, and actions, including restrained grid/area treatment plus exact hover, touch, and keyboard point inspection in both agency and client themes.
 
+## UI follow-up — Unified dark application theme (in progress 2026-08-20)
+
+Objective: give business owners the same calm dark Accelerator OS visual system as the agency administrator across the complete internal application.
+
+Acceptance:
+
+- Agency and client platform routes use one shared dark token system without changing role-specific navigation or authorization.
+- The internal overview, sign-in, password recovery, password change, and two-step verification screens use matching dark semantic surfaces and readable controls.
+- Public client websites retain their independent approved brand systems.
+- Text, controls, charts, focus states, empty states, and overlays remain readable at mobile and desktop sizes with no horizontal overflow.
+- Formatting, lint, type-check, application tests, production build, and representative browser review pass.
+
+Completion record so far:
+
+- Replaced the agency-only theme boundary with one shared internal-platform boundary, so client members and agency administrators now receive the same dark tokens while retaining their own navigation and permissions.
+- Extended the dark system to the internal overview, sign-in, password recovery, password change, and administrator two-step verification screens without altering public business-site branding.
+- Replaced light-only inputs, disabled states, recovery details, and verification panels with semantic control and surface tokens. The authenticator QR tile intentionally remains white for scanner reliability.
+- Added regression coverage for the shared theme boundary, internal dark-theme wrappers, semantic auth controls, the intentional QR exception, and WCAG AA token contrast.
+- Formatting, lint, strict type-check, all 107 application tests, and the production build pass. Representative browser review remains pending before publication.
+
 ## Milestone 11 — Square billing status
 
 Deliverables: hosted-checkout adapter, subscription records, signature-verified idempotent webhooks, normalized states, agency notifications, and manual suspension flow.

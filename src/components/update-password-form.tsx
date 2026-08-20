@@ -29,7 +29,7 @@ export function UpdatePasswordForm({
           autoFocus
           aria-invalid={Boolean(state.errors?.password)}
           aria-describedby="password-guidance password-error"
-          className="min-h-12 rounded-xl border border-[var(--line)] bg-white px-4 text-[var(--ink)] transition outline-none focus:border-[var(--brand)] focus:ring-4 focus:ring-[var(--brand)]/15"
+          className="min-h-12 rounded-xl border border-[var(--line)] bg-[var(--control)] px-4 text-[var(--ink)] transition outline-none focus:border-[var(--brand)] focus:ring-4 focus:ring-[var(--brand)]/15"
         />
         <span
           id="password-guidance"
@@ -57,7 +57,7 @@ export function UpdatePasswordForm({
           aria-describedby={
             state.errors?.confirmation ? 'confirmation-error' : undefined
           }
-          className="min-h-12 rounded-xl border border-[var(--line)] bg-white px-4 text-[var(--ink)] transition outline-none focus:border-[var(--brand)] focus:ring-4 focus:ring-[var(--brand)]/15"
+          className="min-h-12 rounded-xl border border-[var(--line)] bg-[var(--control)] px-4 text-[var(--ink)] transition outline-none focus:border-[var(--brand)] focus:ring-4 focus:ring-[var(--brand)]/15"
         />
         {state.errors?.confirmation ? (
           <span id="confirmation-error" className="font-normal text-red-800">

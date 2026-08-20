@@ -33,7 +33,7 @@ export function ForgotPasswordForm({ configured }: { configured: boolean }) {
           aria-invalid={Boolean(state.errors?.email)}
           aria-describedby={state.errors?.email ? 'email-error' : undefined}
           placeholder="you@business.com"
-          className="min-h-12 rounded-xl border border-[var(--line)] bg-white px-4 text-[var(--ink)] transition outline-none focus:border-[var(--brand)] focus:ring-4 focus:ring-[var(--brand)]/15 disabled:cursor-not-allowed disabled:bg-stone-100"
+          className="min-h-12 rounded-xl border border-[var(--line)] bg-[var(--control)] px-4 text-[var(--ink)] transition outline-none focus:border-[var(--brand)] focus:ring-4 focus:ring-[var(--brand)]/15 disabled:cursor-not-allowed disabled:bg-[var(--surface-hover)]"
         />
         {state.errors?.email ? (
           <span id="email-error" className="font-normal text-red-800">
@@ -59,7 +59,7 @@ export function ForgotPasswordForm({ configured }: { configured: boolean }) {
             ? 'bg-emerald-50 text-emerald-900'
             : state.status === 'error'
               ? 'bg-red-50 text-red-900'
-              : 'bg-stone-100 text-[var(--ink-muted)]'
+              : 'bg-[var(--surface-hover)] text-[var(--ink-muted)]'
         }`}
       >
         {state.message ??

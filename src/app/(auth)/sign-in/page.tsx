@@ -20,7 +20,7 @@ export default async function SignInPage({ searchParams }: Props) {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-[0.78fr_1.22fr]">
-      <section className="flex flex-col justify-between gap-16 bg-[var(--brand)] p-7 text-white sm:p-12 lg:p-16">
+      <section className="flex flex-col justify-between gap-16 border-b border-[var(--line)] bg-[var(--paper)] p-7 text-[var(--ink)] sm:p-12 lg:border-r lg:border-b-0 lg:p-16">
         <BrandMark inverse />
         <div>
           <p className="text-xs font-black tracking-[0.14em] text-[var(--signal)] uppercase">
@@ -29,12 +29,12 @@ export default async function SignInPage({ searchParams }: Props) {
           <h1 className="mt-4 max-w-2xl text-5xl leading-none font-black tracking-[-0.05em] text-balance">
             One workspace. The right view for every role.
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-white/70">
+          <p className="mt-6 max-w-xl text-lg leading-8 text-[var(--ink-muted)]">
             Authentication and role enforcement use verified Supabase sessions
             when the local or hosted service is configured.
           </p>
         </div>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-[var(--ink-muted)]">
           Internal agency system · No public signup
         </p>
       </section>

@@ -31,7 +31,10 @@ const surfaces = [
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen px-5 py-6 sm:px-8 lg:px-12">
+    <main
+      data-application-theme="dark"
+      className="min-h-screen px-5 py-6 sm:px-8 lg:px-12"
+    >
       <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-7xl flex-col rounded-[2rem] border border-[var(--line)] bg-[var(--paper-strong)] shadow-[var(--shadow-soft)]">
         <header className="flex items-center justify-between border-b border-[var(--line)] px-6 py-5 sm:px-9">
           <BrandMark />
@@ -46,7 +49,7 @@ export default function HomePage() {
         <section className="surface-grid grid flex-1 items-stretch overflow-hidden rounded-b-[2rem] lg:grid-cols-[1.08fr_0.92fr]">
           <div className="flex flex-col justify-between gap-16 border-b border-[var(--line)] p-7 sm:p-12 lg:border-r lg:border-b-0 lg:p-16">
             <div>
-              <p className="mb-6 inline-flex rounded-full bg-[var(--signal)] px-3 py-1 text-xs font-black tracking-[0.14em] uppercase">
+              <p className="mb-6 inline-flex rounded-full bg-[var(--signal)] px-3 py-1 text-xs font-black tracking-[0.14em] text-[var(--signal-ink)] uppercase">
                 Agency operations · Analytics first
               </p>
               <h1 className="max-w-4xl text-5xl leading-[0.96] font-black tracking-[-0.055em] text-balance sm:text-7xl">
@@ -65,7 +68,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid divide-y divide-[var(--line)] bg-white/70">
+          <div className="grid divide-y divide-[var(--line)] bg-[var(--paper)]">
             {surfaces.map((surface, index) => (
               <article
                 key={surface.title}

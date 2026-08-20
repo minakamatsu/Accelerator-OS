@@ -70,7 +70,7 @@ describe('platform shell layout', () => {
     expect(shellSource).not.toMatch(/lg:-right-/)
   })
 
-  it('scopes the dark visual system to agency access instead of route names', () => {
+  it('uses one dark visual system for every authenticated platform role', () => {
     const serverShellSource = readFileSync(
       resolve(process.cwd(), 'src/components/platform-shell.tsx'),
       'utf8',
@@ -88,11 +88,12 @@ describe('platform shell layout', () => {
       "theme={accessLevel === 'member' ? 'client' : 'agency'}",
     )
     expect(clientShellSource).toContain('data-platform-theme={theme}')
-    expect(stylesSource).toContain("[data-platform-theme='agency']")
+    expect(stylesSource).toContain('[data-platform-theme],')
+    expect(stylesSource).toContain("[data-application-theme='dark']")
     expect(stylesSource).not.toContain("[href^='/admin']")
   })
 
-  it('keeps agency form values readable and the add-business action compact', () => {
+  it('keeps platform form values readable and the add-business action compact', () => {
     const stylesSource = readFileSync(
       resolve(process.cwd(), 'src/app/globals.css'),
       'utf8',
@@ -102,12 +103,42 @@ describe('platform shell layout', () => {
       'utf8',
     )
 
-    expect(stylesSource).toContain("[data-platform-theme='agency']")
+    expect(stylesSource).toContain('[data-platform-theme],')
     expect(stylesSource).toContain('background-color: var(--control)')
     expect(stylesSource).toContain('-webkit-text-fill-color: var(--ink)')
     expect(stylesSource).toContain('input:-webkit-autofill')
     expect(adminPageSource).toContain('whitespace-nowrap')
     expect(adminPageSource).toContain('Add business')
+  })
+
+  it('keeps every internal entry and account-security screen on the dark system', () => {
+    const authLayoutSource = readFileSync(
+      resolve(process.cwd(), 'src/app/(auth)/layout.tsx'),
+      'utf8',
+    )
+    const homeSource = readFileSync(
+      resolve(process.cwd(), 'src/app/page.tsx'),
+      'utf8',
+    )
+    const formSources = [
+      'src/components/sign-in-form.tsx',
+      'src/components/forgot-password-form.tsx',
+      'src/components/update-password-form.tsx',
+    ]
+      .map((path) => readFileSync(resolve(process.cwd(), path), 'utf8'))
+      .join('\n')
+    const mfaSource = readFileSync(
+      resolve(process.cwd(), 'src/components/mfa-gate.tsx'),
+      'utf8',
+    )
+
+    expect(authLayoutSource).toContain('data-application-theme="dark"')
+    expect(homeSource).toContain('data-application-theme="dark"')
+    expect(homeSource).not.toContain('bg-white')
+    expect(formSources).not.toContain('bg-white')
+    expect(formSources).not.toContain('bg-stone-100')
+    expect(mfaSource.match(/bg-white/g)).toHaveLength(1)
+    expect(mfaSource).toContain('Authenticator setup QR code')
   })
 
   it('keeps semantic foregrounds readable on every platform theme surface', () => {
@@ -117,7 +148,7 @@ describe('platform shell layout', () => {
     )
     const themes = [
       themeVariables(stylesSource, ':root'),
-      themeVariables(stylesSource, "[data-platform-theme='agency']"),
+      themeVariables(stylesSource, "[data-application-theme='dark']"),
     ]
     const pairs = [
       ['ink', 'paper'],

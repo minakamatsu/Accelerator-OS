@@ -18,7 +18,7 @@ export default async function UpdatePasswordPage({ searchParams }: Props) {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-[0.82fr_1.18fr]">
-      <section className="flex flex-col justify-between gap-16 bg-[var(--brand)] p-7 text-white sm:p-12 lg:p-16">
+      <section className="flex flex-col justify-between gap-16 border-b border-[var(--line)] bg-[var(--paper)] p-7 text-[var(--ink)] sm:p-12 lg:border-r lg:border-b-0 lg:p-16">
         <BrandMark inverse />
         <div>
           <p className="text-xs font-black tracking-[0.14em] text-[var(--signal)] uppercase">
@@ -29,12 +29,12 @@ export default async function UpdatePasswordPage({ searchParams }: Props) {
               ? 'Replace the password you no longer want to use.'
               : 'Choose a password built to last.'}
           </h1>
-          <p className="mt-6 max-w-lg text-lg leading-8 text-white/70">
+          <p className="mt-6 max-w-lg text-lg leading-8 text-[var(--ink-muted)]">
             Saving signs the account out everywhere and removes this browser’s
             authenticated session.
           </p>
         </div>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-[var(--ink-muted)]">
           {fromSettings
             ? 'Current signed-in session verified by Supabase Auth'
             : 'Recovery session verified by Supabase Auth'}

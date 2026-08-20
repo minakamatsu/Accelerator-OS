@@ -34,7 +34,7 @@ export function SignInForm({
           aria-invalid={Boolean(state.errors?.email)}
           aria-describedby={state.errors?.email ? 'email-error' : undefined}
           placeholder="you@business.com"
-          className="rounded-xl border border-[var(--line)] bg-white px-4 py-3 text-[var(--ink)] disabled:cursor-not-allowed disabled:bg-stone-100 disabled:text-[var(--ink-muted)]"
+          className="rounded-xl border border-[var(--line)] bg-[var(--control)] px-4 py-3 text-[var(--ink)] disabled:cursor-not-allowed disabled:bg-[var(--surface-hover)] disabled:text-[var(--ink-muted)]"
         />
         {state.errors?.email && (
           <span id="email-error" className="text-sm font-normal text-red-800">
@@ -55,7 +55,7 @@ export function SignInForm({
             state.errors?.password ? 'password-error' : undefined
           }
           placeholder="••••••••"
-          className="rounded-xl border border-[var(--line)] bg-white px-4 py-3 text-[var(--ink)] disabled:cursor-not-allowed disabled:bg-stone-100 disabled:text-[var(--ink-muted)]"
+          className="rounded-xl border border-[var(--line)] bg-[var(--control)] px-4 py-3 text-[var(--ink)] disabled:cursor-not-allowed disabled:bg-[var(--surface-hover)] disabled:text-[var(--ink-muted)]"
         />
         {state.errors?.password && (
           <span

@@ -218,7 +218,7 @@ export function MfaGate({ nextPath }: { nextPath: Route }) {
   return (
     <div className="mt-8 grid gap-6">
       {state.mode === 'enroll' ? (
-        <div className="grid gap-5 rounded-2xl border border-[var(--line)] bg-white p-5 text-[var(--ink)] sm:grid-cols-[10rem_1fr] sm:items-center">
+        <div className="grid gap-5 rounded-2xl border border-[var(--line)] bg-[var(--control)] p-5 text-[var(--ink)] sm:grid-cols-[10rem_1fr] sm:items-center">
           {state.qrCode ? (
             <div className="rounded-xl border border-[var(--line)] bg-white p-3">
               {/* Supabase returns a complete SVG data URL that must be rendered
@@ -245,7 +245,7 @@ export function MfaGate({ nextPath }: { nextPath: Route }) {
                 <summary className="cursor-pointer font-bold">
                   Cannot scan the code?
                 </summary>
-                <p className="mt-2 rounded-lg bg-stone-100 p-3 font-mono text-xs break-all">
+                <p className="mt-2 rounded-lg bg-[var(--surface-hover)] p-3 font-mono text-xs break-all">
                   {state.secret}
                 </p>
               </details>
@@ -253,7 +253,7 @@ export function MfaGate({ nextPath }: { nextPath: Route }) {
           </div>
         </div>
       ) : (
-        <div className="rounded-2xl border border-[var(--line)] bg-white p-5 text-[var(--ink)]">
+        <div className="rounded-2xl border border-[var(--line)] bg-[var(--control)] p-5 text-[var(--ink)]">
           <p className="font-black">Open your authenticator app</p>
           <p className="mt-2 text-sm leading-6 text-[var(--ink-muted)]">
             Enter the newest six-digit code shown for Accelerator OS.
@@ -280,7 +280,7 @@ export function MfaGate({ nextPath }: { nextPath: Route }) {
             disabled={submitting || Boolean(state.error && !state.factorId)}
             placeholder="000000"
             aria-describedby="mfa-status"
-            className="min-h-14 rounded-xl border border-[var(--line)] bg-white px-4 text-center font-mono text-2xl tracking-[0.35em] text-[var(--ink)] transition outline-none focus:border-[var(--brand)] focus:ring-4 focus:ring-[var(--brand)]/15"
+            className="min-h-14 rounded-xl border border-[var(--line)] bg-[var(--control)] px-4 text-center font-mono text-2xl tracking-[0.35em] text-[var(--ink)] transition outline-none focus:border-[var(--brand)] focus:ring-4 focus:ring-[var(--brand)]/15"
           />
         </label>
         <button
@@ -297,7 +297,7 @@ export function MfaGate({ nextPath }: { nextPath: Route }) {
         <p
           id="mfa-status"
           aria-live="polite"
-          className="min-h-6 text-sm leading-6 text-red-800"
+          className="min-h-6 text-sm leading-6 text-[var(--danger-ink)]"
         >
           {state.error}
         </p>

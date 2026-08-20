@@ -31,7 +31,8 @@
   --shadow-control: 0 8px 24px rgb(16 35 31 / 0.08);
 }
 
-[data-platform-theme='agency'] {
+[data-platform-theme],
+[data-application-theme='dark'] {
   --ink: #f2f7f4;
   --ink-muted: #9fb2ab;
   --paper: #07100e;
@@ -69,13 +70,13 @@
     var(--paper);
 }
 
-[data-platform-theme='agency'] input,
-[data-platform-theme='agency'] textarea,
-[data-platform-theme='agency'] select {
+:is([data-platform-theme], [data-application-theme='dark']) input,
+:is([data-platform-theme], [data-application-theme='dark']) textarea,
+:is([data-platform-theme], [data-application-theme='dark']) select {
   caret-color: var(--signal);
 }
 
-[data-platform-theme='agency']
+:is([data-platform-theme], [data-application-theme='dark'])
   input:not(
     :where(
       [type='checkbox'],
@@ -87,23 +88,26 @@
       [type='reset']
     )
   ),
-[data-platform-theme='agency'] textarea,
-[data-platform-theme='agency'] select {
+:is([data-platform-theme], [data-application-theme='dark']) textarea,
+:is([data-platform-theme], [data-application-theme='dark']) select {
   border-color: var(--line);
   background-color: var(--control);
   color: var(--ink);
   -webkit-text-fill-color: var(--ink);
 }
 
-[data-platform-theme='agency'] input:-webkit-autofill,
-[data-platform-theme='agency'] input:-webkit-autofill:hover,
-[data-platform-theme='agency'] input:-webkit-autofill:focus {
+:is([data-platform-theme], [data-application-theme='dark'])
+  input:-webkit-autofill,
+:is([data-platform-theme], [data-application-theme='dark'])
+  input:-webkit-autofill:hover,
+:is([data-platform-theme], [data-application-theme='dark'])
+  input:-webkit-autofill:focus {
   box-shadow: 0 0 0 1000px var(--control) inset;
   -webkit-text-fill-color: var(--ink);
   caret-color: var(--signal);
 }
 
-[data-platform-theme='agency'] ::placeholder {
+:is([data-platform-theme], [data-application-theme='dark']) ::placeholder {
   color: #71837d;
   opacity: 1;
 }
@@ -163,8 +167,15 @@ button {
 
 .surface-grid {
   background-image:
-    linear-gradient(rgb(16 35 31 / 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(16 35 31 / 0.055) 1px, transparent 1px);
+    linear-gradient(
+      color-mix(in srgb, var(--ink) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ink) 7%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 36px 36px;
 }
 

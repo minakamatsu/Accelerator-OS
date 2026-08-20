@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-[0.82fr_1.18fr]">
-      <section className="flex flex-col justify-between gap-16 bg-[var(--brand)] p-7 text-white sm:p-12 lg:p-16">
+      <section className="flex flex-col justify-between gap-16 border-b border-[var(--line)] bg-[var(--paper)] p-7 text-[var(--ink)] sm:p-12 lg:border-r lg:border-b-0 lg:p-16">
         <BrandMark inverse />
         <div>
           <p className="text-xs font-black tracking-[0.14em] text-[var(--signal)] uppercase">
@@ -21,12 +21,12 @@ export default function ForgotPasswordPage() {
           <h1 className="mt-4 max-w-xl text-4xl leading-[0.98] font-black tracking-[-0.05em] text-balance sm:text-5xl">
             Get back in without involving the agency.
           </h1>
-          <p className="mt-6 max-w-lg text-lg leading-8 text-white/70">
+          <p className="mt-6 max-w-lg text-lg leading-8 text-[var(--ink-muted)]">
             A time-limited link verifies control of the account email before a
             password can be changed.
           </p>
         </div>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-[var(--ink-muted)]">
           Private by design · No account details are disclosed
         </p>
       </section>
